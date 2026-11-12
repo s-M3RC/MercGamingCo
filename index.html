@@ -63,39 +63,18 @@
   <!-- TOP 1970s STRIPED RIBBON -->
   <div class="retro-ribbon-bar w-full"></div>
 
-  <!-- PERSISTENT ARTWORK LOADER & LOCAL MEMORY STATUS BAR -->
-  <aside aria-label="Artwork Manager" class="bg-[#1C1A18] border-b border-white/10 px-4 py-2.5">
-    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3 text-xs">
-      <div class="flex items-center gap-2">
-        <span class="w-2.5 h-2.5 rounded-full bg-retro-mint animate-pulse"></span>
-        <span class="font-headline font-bold text-white uppercase tracking-wider">IndexedDB Asset Vault</span>
-        <span class="text-white/40 hidden sm:inline">• Drop your card PNGs & logo here anytime</span>
-      </div>
-      <div class="flex items-center gap-2">
-        <input type="file" id="asset-file-input" multiple accept="image/*" class="hidden">
-        <button id="asset-upload-btn" class="bg-retro-gold hover:bg-amber-400 text-black font-headline font-bold px-3 py-1.5 rounded-lg text-xs transition retro-shadow-sm flex items-center gap-1.5">
-          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
-          <span>CHOOSE / DROP PNGs</span>
-        </button>
-        <button id="asset-reset-btn" class="bg-white/10 hover:bg-white/20 text-white/70 hover:text-white font-headline text-xs px-2.5 py-1.5 rounded-lg transition">
-          RESET
-        </button>
-      </div>
-    </div>
-  </aside>
-
   <!-- NAVIGATION BAR -->
   <header class="sticky top-0 z-40 bg-[#161514]/95 backdrop-blur border-b border-white/10">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
       
       <!-- LOGO (INTERLOCKING M + BUNGEE TEXT) -->
       <a href="javascript:void(0)" onclick="navigateToView('home')" class="flex items-center gap-3.5 group">
-        <div class="relative w-10 h-10 flex items-center justify-center bg-black/40 border border-white/10 rounded-xl p-1.5">
+        <div class="relative w-10 h-10 flex items-center justify-center bg-white border border-white/10 rounded-xl p-1.5">
+          <img id="nav-logo-img" src="merc gaming co logo.png" alt="Merc Gaming Co. Logo" class="w-full h-full object-contain rounded-lg" onerror="this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='block';">
           <!-- Vector Interlocking M fallback -->
-          <svg id="nav-logo-svg" class="w-full h-full text-white" viewBox="0 0 100 100" fill="currentColor">
+          <svg id="nav-logo-svg" class="hidden w-full h-full text-black" viewBox="0 0 100 100" fill="currentColor">
             <path d="M10 85 V20 L50 60 L90 20 V85 H74 V40 L50 64 L26 40 V85 Z" fill="currentColor"/>
           </svg>
-          <img id="nav-logo-img" alt="Merc Gaming Co. Logo" class="hidden w-full h-full object-contain rounded-lg">
         </div>
         <div class="flex flex-col">
           <span class="font-display text-lg sm:text-xl text-white tracking-wide leading-none group-hover:text-retro-gold transition">MERC</span>
@@ -113,7 +92,11 @@
           <span class="text-[9px] bg-retro-orange text-white px-1.5 py-0.5 rounded font-display">FLAGSHIP</span>
         </button>
         <a href="#games-catalog" onclick="if(currentView!=='home') navigateToView('home');" class="text-white/80 hover:text-retro-gold transition">Pipeline</a>
-        <a href="#store" class="text-white/80 hover:text-retro-gold transition">Merch & Store</a>
+        <a href="#kickstarter" class="text-white/80 hover:text-retro-mint transition flex items-center gap-1.5">
+          <span>Kickstarter</span>
+          <span class="w-2 h-2 rounded-full bg-retro-mint animate-pulse"></span>
+        </a>
+        <a href="#store" class="text-white/80 hover:text-retro-gold transition">Store</a>
       </nav>
 
       <!-- CART TRIGGER -->
@@ -247,7 +230,7 @@
             </p>
           </div>
 
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             
             <!-- GAME 01: LAST CARD STANDING -->
             <div class="bg-retro-charcoal border-2 border-retro-orange rounded-2xl p-6 retro-shadow flex flex-col justify-between">
@@ -272,48 +255,25 @@
               </div>
             </div>
 
-            <!-- GAME 02: OVERTIME SHAKEDOWN (UPCOMING) -->
+            <!-- GAME 02: TIPPING POINT (UPCOMING) -->
             <div class="bg-retro-charcoal/70 border border-white/10 rounded-2xl p-6 retro-shadow flex flex-col justify-between">
               <div>
                 <div class="flex items-center justify-between mb-2">
                   <span class="text-xs font-headline uppercase tracking-wider text-white/40 font-bold">Merc Game #02</span>
-                  <span class="bg-white/10 text-retro-mint text-[9px] font-display px-2 py-0.5 rounded-full">PLAYTESTING</span>
+                  <span class="bg-white/10 text-retro-mint text-[9px] font-display px-2 py-0.5 rounded-full">IN DEVELOPMENT</span>
                 </div>
-                <h3 class="text-2xl font-display text-white">OVERTIME SHAKEDOWN</h3>
-                <p class="text-xs text-retro-teal font-bold uppercase mt-1">Casino Heist & Hidden Roles</p>
+                <h3 class="text-2xl font-display text-white">TIPPING POINT</h3>
+                <p class="text-xs text-retro-teal font-bold uppercase mt-1">Upcoming Tabletop Release</p>
                 <p class="text-xs text-retro-cream/70 mt-3 leading-relaxed">
-                  Tension-fueled social deduction set inside a 1978 vault heist. Collect blueprint keys, bribe guards, and identify the rat before the sirens trip.
+                  The next Merc Gaming Co. original currently in design. Full rules, mechanics, and playtest details coming soon.
                 </p>
                 <div class="flex items-center gap-3 mt-4 text-[11px] text-white/50 font-headline">
-                  <span>3–8 Players</span> • <span>30 Min</span> • <span>Coming 2026</span>
+                  <span>Details Coming Soon</span> • <span>Playtesting 2026</span>
                 </div>
               </div>
               <div class="mt-6 pt-4 border-t border-white/10">
-                <button onclick="showToast('Subscribed to Overtime Shakedown VIP playtest list!')" class="w-full bg-white/10 hover:bg-white/20 text-white font-headline text-xs font-bold py-3 rounded-xl transition">
-                  REQUEST PLAYTEST PACK
-                </button>
-              </div>
-            </div>
-
-            <!-- GAME 03: SPEED PIT (UPCOMING) -->
-            <div class="bg-retro-charcoal/70 border border-white/10 rounded-2xl p-6 retro-shadow flex flex-col justify-between">
-              <div>
-                <div class="flex items-center justify-between mb-2">
-                  <span class="text-xs font-headline uppercase tracking-wider text-white/40 font-bold">Merc Game #03</span>
-                  <span class="bg-white/10 text-retro-gold text-[9px] font-display px-2 py-0.5 rounded-full">IN LAB</span>
-                </div>
-                <h3 class="text-2xl font-display text-white">SPEED PIT</h3>
-                <p class="text-xs text-retro-burgundy font-bold uppercase mt-1">Simultaneous Dice & Drift Racing</p>
-                <p class="text-xs text-retro-cream/70 mt-3 leading-relaxed">
-                  Push your luck down a retro asphalt track. Gear shifts, tire spinouts, slipstream passes, and zero waiting between player turns.
-                </p>
-                <div class="flex items-center gap-3 mt-4 text-[11px] text-white/50 font-headline">
-                  <span>2–4 Players</span> • <span>20 Min</span> • <span>Concept Phase</span>
-                </div>
-              </div>
-              <div class="mt-6 pt-4 border-t border-white/10">
-                <button onclick="showToast('Notified! We will email you once prototypes print.')" class="w-full bg-white/10 hover:bg-white/20 text-white font-headline text-xs font-bold py-3 rounded-xl transition">
-                  FOLLOW DEVELOPMENT
+                <button onclick="showToast('Subscribed to Tipping Point VIP playtest updates!')" class="w-full bg-white/10 hover:bg-white/20 text-white font-headline text-xs font-bold py-3 rounded-xl transition">
+                  GET PLAYTEST UPDATES
                 </button>
               </div>
             </div>
@@ -421,25 +381,24 @@
         </div>
       </section>
 
-      <!-- CARD VAULT SECTION (ALL 22 CARDS) -->
+      <!-- CARD VAULT SECTION (ALL 21 CARDS) -->
       <section id="deck-vault" class="py-20 bg-[#161514] border-b border-white/10">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
           <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
             <div>
               <span class="text-xs font-headline uppercase tracking-widest text-retro-gold font-bold">Interactive Card Vault</span>
-              <h2 class="text-3xl sm:text-5xl font-display uppercase text-white mt-1">THE 22-CARD DECK</h2>
+              <h2 class="text-3xl sm:text-5xl font-display uppercase text-white mt-1">THE CARD VAULT</h2>
               <p class="text-retro-cream/70 mt-2 text-sm max-w-xl">
-                Inspect every card in the game: 14 numbered base cards, all 7 sabotage Action cards, and the quick-reference rules guide. Click any card to inspect full odds and tactics.
+                Inspect every card in the game: 14 numbered base cards and all 7 sabotage Action cards. Click any card to view a large, high-resolution preview with full odds and tactics.
               </p>
             </div>
 
             <!-- FILTERS -->
             <div class="flex flex-wrap gap-2 text-xs font-headline font-bold">
-              <button class="vault-filter-btn px-4 py-2 rounded-xl bg-retro-orange text-white transition" data-filter="all">ALL CARDS (22)</button>
+              <button class="vault-filter-btn px-4 py-2 rounded-xl bg-retro-orange text-white transition" data-filter="all">ALL CARDS (21)</button>
               <button class="vault-filter-btn px-4 py-2 rounded-xl bg-white/10 text-retro-cream hover:bg-white/20 transition" data-filter="number">NUMBERS (1–14)</button>
               <button class="vault-filter-btn px-4 py-2 rounded-xl bg-white/10 text-retro-cream hover:bg-white/20 transition" data-filter="action">ACTIONS (7)</button>
-              <button class="vault-filter-btn px-4 py-2 rounded-xl bg-white/10 text-retro-cream hover:bg-white/20 transition" data-filter="rules">HOW TO PLAY</button>
             </div>
           </div>
 
@@ -468,11 +427,11 @@
             <!-- TABLE DIAGRAM IMAGE -->
             <div class="lg:col-span-7 flex justify-center">
               <div class="relative w-full max-w-lg card-ratio bg-retro-charcoal border-4 border-black rounded-3xl p-4 retro-shadow flex items-center justify-center overflow-hidden">
-                <img id="layout-diagram-img" src="LAYOUT.jpg" alt="Official Table Layout Diagram" class="w-full h-full object-contain rounded-2xl" onerror="this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='flex';">
+                <img id="layout-diagram-img" src="LAYOUT.png" alt="Official Table Layout Diagram" class="w-full h-full object-contain rounded-2xl" onerror="this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='flex';">
                 <!-- Fallback Diagram if unhosted -->
                 <div class="hidden absolute inset-0 flex-col items-center justify-center p-6 text-center bg-[#1A1816]">
                   <span class="font-display text-retro-gold text-2xl">TABLE LAYOUT</span>
-                  <p class="text-xs text-white/60 mt-2">Drop LAYOUT.jpg into the Asset Vault above to display your official high-res table diagram.</p>
+                  <p class="text-xs text-white/60 mt-2">Official 4-player setup diagram (LAYOUT.png).</p>
                 </div>
               </div>
             </div>
@@ -558,96 +517,147 @@
     </div>
 
     <!-- ====================================================== -->
-    <!-- GLOBAL SECTION: MERC STORE & MERCHANDISE               -->
+    <!-- GLOBAL SECTION: KICKSTARTER CAMPAIGN HUB               -->
+    <!-- ====================================================== -->
+    <section id="kickstarter" class="py-20 bg-[#161514] border-b border-white/10">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="bg-gradient-to-br from-retro-charcoal via-[#1F1C19] to-[#161412] border-2 border-retro-mint/40 rounded-3xl p-8 sm:p-12 retro-shadow">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+            
+            <!-- LEFT: CAMPAIGN PITCH & NOTIFY FORM -->
+            <div class="lg:col-span-7 space-y-5">
+              <div class="inline-flex items-center gap-2 bg-retro-mint/15 text-retro-mint px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider border border-retro-mint/30">
+                <span class="w-2 h-2 rounded-full bg-retro-mint animate-pulse"></span>
+                <span>Kickstarter Pre-Launch • Coming Soon</span>
+              </div>
+
+              <h2 class="text-3xl sm:text-5xl font-display uppercase text-white tracking-tight leading-tight">
+                BACK <span class="text-retro-mint">LAST CARD STANDING</span> ON KICKSTARTER
+              </h2>
+
+              <p class="text-retro-cream/80 text-sm sm:text-base leading-relaxed">
+                Help bring the first full print run of <strong class="text-white">Last Card Standing</strong> to tabletops everywhere. Follow our pre-launch page or join the Day-1 backer alert list to lock in early-bird launch notifications the moment we go live.
+              </p>
+
+              <!-- CAMPAIGN MILESTONE PILLS -->
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
+                <div class="bg-black/40 border border-white/10 rounded-xl p-3.5">
+                  <span class="text-[10px] font-headline uppercase tracking-wider text-retro-mint font-bold">Phase 01</span>
+                  <p class="font-display text-white text-sm mt-0.5">PRE-LAUNCH PAGE</p>
+                  <p class="text-[11px] text-white/60 mt-1">Sign up for Day-1 launch alerts.</p>
+                </div>
+                <div class="bg-black/40 border border-white/10 rounded-xl p-3.5">
+                  <span class="text-[10px] font-headline uppercase tracking-wider text-retro-gold font-bold">Phase 02</span>
+                  <p class="font-display text-white text-sm mt-0.5">EARLY-BIRD TIERS</p>
+                  <p class="text-[11px] text-white/60 mt-1">First-48hr supporter rewards.</p>
+                </div>
+                <div class="bg-black/40 border border-white/10 rounded-xl p-3.5">
+                  <span class="text-[10px] font-headline uppercase tracking-wider text-retro-orange font-bold">Phase 03</span>
+                  <p class="font-display text-white text-sm mt-0.5">FIRST PRINT RUN</p>
+                  <p class="text-[11px] text-white/60 mt-1">330gsm black-core production.</p>
+                </div>
+              </div>
+
+              <!-- NOTIFY FORM & KICKSTARTER LINK BUTTON -->
+              <div class="pt-3 space-y-3">
+                <form onsubmit="event.preventDefault(); showToast('You\'re on the Day-1 Kickstarter Launch List!'); this.reset();" class="flex flex-col sm:flex-row gap-3 max-w-xl">
+                  <input type="email" required placeholder="Enter email for Day-1 launch alert..." class="bg-black/60 border border-white/20 px-4 py-3.5 rounded-xl text-xs text-white placeholder-white/40 focus:outline-none focus:border-retro-mint flex-grow">
+                  <button type="submit" class="bg-retro-mint hover:bg-emerald-300 text-black font-display text-xs tracking-wider px-6 py-3.5 rounded-xl transition retro-shadow-sm whitespace-nowrap">
+                    NOTIFY ME AT LAUNCH
+                  </button>
+                </form>
+
+                <div class="flex flex-wrap items-center gap-4 pt-1">
+                  <a id="kickstarter-campaign-link" href="#kickstarter" onclick="handleKickstarterClick(event)" class="inline-flex items-center gap-2 text-xs font-headline font-bold text-retro-gold hover:text-white transition">
+                    <span>VIEW KICKSTARTER PRE-LAUNCH PAGE →</span>
+                  </a>
+                  <span class="text-[11px] text-white/40 font-headline">• Official campaign URL linking soon</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- RIGHT: CAMPAIGN STATUS CARD -->
+            <div class="lg:col-span-5">
+              <div class="bg-[#141312] border-2 border-white/15 rounded-2xl p-6 space-y-5 retro-shadow">
+                <div class="flex items-center justify-between border-b border-white/10 pb-4">
+                  <div>
+                    <span class="text-[10px] font-headline uppercase tracking-widest text-retro-mint font-bold">Crowdfunding Status</span>
+                    <h3 class="font-display text-white text-xl mt-0.5">CAMPAIGN TRACKER</h3>
+                  </div>
+                  <span class="bg-retro-mint/20 text-retro-mint border border-retro-mint/40 font-display text-[10px] px-3 py-1 rounded-full">
+                    PREPARING LAUNCH
+                  </span>
+                </div>
+
+                <!-- PROGRESS BAR PLACEHOLDER -->
+                <div class="space-y-2">
+                  <div class="flex justify-between text-xs font-headline">
+                    <span class="text-white/70 font-bold">Pre-Launch Followers</span>
+                    <span class="text-retro-gold font-display">BUILDING TRACTION</span>
+                  </div>
+                  <div class="w-full h-3 bg-white/10 rounded-full overflow-hidden p-0.5">
+                    <div class="h-full w-2/5 bg-gradient-to-r from-retro-orange via-retro-gold to-retro-mint rounded-full"></div>
+                  </div>
+                </div>
+
+                <ul class="space-y-2.5 text-xs text-retro-cream/80 font-sans pt-1">
+                  <li class="flex items-center gap-2.5">
+                    <span class="text-retro-mint font-bold">✓</span>
+                    <span>Complete 22-card artwork & rules finalized</span>
+                  </li>
+                  <li class="flex items-center gap-2.5">
+                    <span class="text-retro-mint font-bold">✓</span>
+                    <span>Physical prototype decks playtested</span>
+                  </li>
+                  <li class="flex items-center gap-2.5">
+                    <span class="text-retro-gold font-bold">◉</span>
+                    <span>Kickstarter campaign page & video in final prep</span>
+                  </li>
+                </ul>
+
+                <button onclick="handleKickstarterClick(event)" class="w-full bg-white/10 hover:bg-white/20 text-white font-display text-xs tracking-wider py-3.5 rounded-xl border border-white/15 transition">
+                  FOLLOW ON KICKSTARTER (COMING SOON)
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================== -->
+    <!-- GLOBAL SECTION: MERC STORE                             -->
     <!-- ====================================================== -->
     <section id="store" class="py-20 bg-[#121110]">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <div class="text-center max-w-2xl mx-auto mb-14">
           <span class="text-xs font-headline uppercase tracking-widest text-retro-gold font-bold">Merc Store</span>
-          <h2 class="text-3xl sm:text-5xl font-display uppercase text-white mt-1">GAMES & GEAR</h2>
+          <h2 class="text-3xl sm:text-5xl font-display uppercase text-white mt-1">ORDER THE GAME</h2>
           <p class="text-retro-cream/70 mt-2 text-sm">
-            Equip your game night table with official Merc Gaming Co. decks and tabletop gear.
+            Equip your game night table with the official Last Card Standing core deck.
           </p>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="max-w-md mx-auto">
           
           <!-- ITEM 1: CORE DECK -->
-          <div class="bg-retro-charcoal border border-white/10 hover:border-retro-orange rounded-2xl p-5 retro-shadow flex flex-col justify-between transition">
+          <div class="bg-retro-charcoal border-2 border-white/15 hover:border-retro-orange rounded-2xl p-6 retro-shadow flex flex-col justify-between transition">
             <div>
-              <div class="relative w-full aspect-square rounded-xl bg-black/40 border border-white/10 flex items-center justify-center overflow-hidden mb-4 p-4">
-                <span class="font-display text-white text-3xl text-center">CORE DECK</span>
+              <div class="relative w-full aspect-square rounded-xl bg-black/40 border border-white/10 flex items-center justify-center overflow-hidden mb-5 p-4">
+                <img src="front of box.png" alt="Last Card Standing Core Deck Box" class="w-full h-full object-contain rounded-lg" onerror="this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='block';">
+                <span class="hidden font-display text-white text-3xl text-center">CORE DECK</span>
               </div>
-              <span class="text-[10px] font-headline uppercase tracking-widest text-retro-orange font-bold">Card Game</span>
-              <h3 class="font-display text-white text-base mt-1">LAST CARD STANDING</h3>
+              <span class="text-[10px] font-headline uppercase tracking-widest text-retro-orange font-bold">Flagship Card Game</span>
+              <h3 class="font-display text-white text-xl mt-1">LAST CARD STANDING — CORE DECK</h3>
               <p class="text-xs text-retro-cream/70 mt-2 leading-relaxed">
-                Complete 22-card casino black-core deck, rigid magnetic storage box, and foil rulebook.
+                Complete 22-card casino black-core deck, rigid storage box, and quick-start rule card.
               </p>
             </div>
             <div class="mt-6 pt-4 border-t border-white/10 flex items-center justify-between">
-              <span class="font-display text-retro-gold text-lg">$24.99</span>
-              <button onclick="addToCart('core-deck', 'Last Card Standing - Core Deck', 24.99)" class="bg-retro-orange hover:bg-orange-600 text-white font-headline font-bold text-xs px-4 py-2.5 rounded-xl transition">
-                ADD TO CART
-              </button>
-            </div>
-          </div>
-
-          <!-- ITEM 2: FOUNDER'S DELUXE -->
-          <div class="bg-retro-charcoal border border-white/10 hover:border-retro-gold rounded-2xl p-5 retro-shadow flex flex-col justify-between transition">
-            <div>
-              <div class="relative w-full aspect-square rounded-xl bg-black/40 border border-white/10 flex items-center justify-center overflow-hidden mb-4 p-4">
-                <span class="font-display text-retro-gold text-3xl text-center">DELUXE BOX</span>
-              </div>
-              <span class="text-[10px] font-headline uppercase tracking-widest text-retro-gold font-bold">Collector Box</span>
-              <h3 class="font-display text-white text-base mt-1">FOUNDER'S EDITION</h3>
-              <p class="text-xs text-retro-cream/70 mt-2 leading-relaxed">
-                2x Core Decks, custom brass turn token, 4 acrylic prediction chevrons, and numbered sleeve.
-              </p>
-            </div>
-            <div class="mt-6 pt-4 border-t border-white/10 flex items-center justify-between">
-              <span class="font-display text-retro-gold text-lg">$39.99</span>
-              <button onclick="addToCart('deluxe-deck', 'Founder\'s Deluxe Edition', 39.99)" class="bg-retro-gold hover:bg-amber-400 text-black font-headline font-bold text-xs px-4 py-2.5 rounded-xl transition">
-                ADD TO CART
-              </button>
-            </div>
-          </div>
-
-          <!-- ITEM 3: TABLE PLAYMAT -->
-          <div class="bg-retro-charcoal border border-white/10 hover:border-retro-teal rounded-2xl p-5 retro-shadow flex flex-col justify-between transition">
-            <div>
-              <div class="relative w-full aspect-square rounded-xl bg-black/40 border border-white/10 flex items-center justify-center overflow-hidden mb-4 p-4">
-                <span class="font-display text-retro-teal text-3xl text-center">PLAYMAT</span>
-              </div>
-              <span class="text-[10px] font-headline uppercase tracking-widest text-retro-teal font-bold">Accessories</span>
-              <h3 class="font-display text-white text-base mt-1">NEOPRENE TABLE MAT</h3>
-              <p class="text-xs text-retro-cream/70 mt-2 leading-relaxed">
-                Stitched-edge gaming mat with printed zones for Draw, Number Discard, and Action Discard.
-              </p>
-            </div>
-            <div class="mt-6 pt-4 border-t border-white/10 flex items-center justify-between">
-              <span class="font-display text-retro-gold text-lg">$28.00</span>
-              <button onclick="addToCart('playmat', 'Official Neoprene Table Mat', 28.00)" class="bg-retro-teal hover:bg-teal-600 text-white font-headline font-bold text-xs px-4 py-2.5 rounded-xl transition">
-                ADD TO CART
-              </button>
-            </div>
-          </div>
-
-          <!-- ITEM 4: MERC ROPE CAP -->
-          <div class="bg-retro-charcoal border border-white/10 hover:border-retro-mint rounded-2xl p-5 retro-shadow flex flex-col justify-between transition">
-            <div>
-              <div class="relative w-full aspect-square rounded-xl bg-black/40 border border-white/10 flex items-center justify-center overflow-hidden mb-4 p-4">
-                <span class="font-display text-retro-mint text-3xl text-center">MERC CAP</span>
-              </div>
-              <span class="text-[10px] font-headline uppercase tracking-widest text-retro-mint font-bold">Apparel</span>
-              <h3 class="font-display text-white text-base mt-1">5-PANEL ROPE CAP</h3>
-              <p class="text-xs text-retro-cream/70 mt-2 leading-relaxed">
-                Vintage khaki 5-panel rope cap embroidered with the geometric Merc interlocking 'M' logo.
-              </p>
-            </div>
-            <div class="mt-6 pt-4 border-t border-white/10 flex items-center justify-between">
-              <span class="font-display text-retro-gold text-lg">$32.00</span>
-              <button onclick="addToCart('hat', 'Merc 5-Panel Rope Cap', 32.00)" class="bg-white/10 hover:bg-white/20 text-white font-headline font-bold text-xs px-4 py-2.5 rounded-xl transition">
+              <span class="font-display text-retro-gold text-xl">$24.99</span>
+              <button onclick="addToCart('core-deck', 'Last Card Standing - Core Deck', 24.99)" class="bg-retro-orange hover:bg-orange-600 text-white font-headline font-bold text-xs px-5 py-3 rounded-xl transition retro-shadow-sm">
                 ADD TO CART
               </button>
             </div>
@@ -669,14 +679,18 @@
       <div class="grid grid-cols-1 md:grid-cols-12 gap-10">
         
         <div class="md:col-span-5 space-y-4">
-          <div class="flex items-center gap-3">
-            <div class="w-8 h-8 flex items-center justify-center bg-black border border-white/10 rounded-lg p-1">
-              <svg class="w-full h-full text-white" viewBox="0 0 100 100" fill="currentColor">
-                <path d="M10 85 V20 L50 60 L90 20 V85 H74 V40 L50 64 L26 40 V85 Z"/>
+          <a href="javascript:void(0)" onclick="navigateToView('home')" class="inline-flex items-center gap-3.5 group">
+            <div class="relative w-10 h-10 flex items-center justify-center bg-white border border-white/10 rounded-xl p-1.5">
+              <img src="merc gaming co logo.png" alt="Merc Gaming Co. Logo" class="w-full h-full object-contain rounded-lg" onerror="this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='block';">
+              <svg class="hidden w-full h-full text-black" viewBox="0 0 100 100" fill="currentColor">
+                <path d="M10 85 V20 L50 60 L90 20 V85 H74 V40 L50 64 L26 40 V85 Z" fill="currentColor"/>
               </svg>
             </div>
-            <span class="font-display text-xl text-white">MERC GAMING CO.</span>
-          </div>
+            <div class="flex flex-col">
+              <span class="font-display text-lg sm:text-xl text-white tracking-wide leading-none group-hover:text-retro-gold transition">MERC</span>
+              <span class="font-display text-[10px] sm:text-xs text-retro-gold tracking-widest leading-none mt-0.5">GAMING CO.</span>
+            </div>
+          </a>
           <p class="text-xs text-retro-cream/60 leading-relaxed max-w-sm">
             Independent tabletop studio publishing quick-teaching, tactile games built for intense bluffing and unforgettable table memories.
           </p>
@@ -684,12 +698,12 @@
         </div>
 
         <div class="md:col-span-3 space-y-3 text-xs font-headline">
-          <h5 class="font-display text-white text-sm">GAMES</h5>
+          <h5 class="font-display text-white text-sm">GAMES & LAUNCH</h5>
           <ul class="space-y-2 text-white/60">
             <li><button onclick="navigateToView('game')" class="hover:text-retro-gold transition">Last Card Standing</button></li>
-            <li><a href="#games-catalog" class="hover:text-retro-gold transition">Overtime Shakedown (Prototype)</a></li>
-            <li><a href="#games-catalog" class="hover:text-retro-gold transition">Speed Pit (Racing)</a></li>
-            <li><a href="#table-layout" class="hover:text-retro-gold transition">Rules & Table Setups</a></li>
+            <li><a href="#games-catalog" onclick="if(currentView!=='home') navigateToView('home');" class="hover:text-retro-gold transition">Tipping Point (In Development)</a></li>
+            <li><a href="#kickstarter" class="hover:text-retro-mint transition">Kickstarter Campaign</a></li>
+            <li><a href="#table-layout" onclick="if(currentView!=='game') navigateToView('game');" class="hover:text-retro-gold transition">Rules & Table Setups</a></li>
           </ul>
         </div>
 
@@ -717,32 +731,32 @@
   <!-- ======================================================== -->
   <!-- CARD INSPECTOR LIGHTBOX MODAL                            -->
   <!-- ======================================================== -->
-  <div id="card-inspector-modal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm hidden flex items-center justify-center p-4">
-    <div class="relative bg-retro-charcoal border-2 border-white/20 rounded-3xl max-w-lg w-full p-6 sm:p-8 retro-shadow overflow-hidden">
-      <button onclick="closeCardInspector()" class="absolute top-4 right-4 text-white/60 hover:text-white bg-white/10 hover:bg-white/20 w-8 h-8 rounded-full flex items-center justify-center transition">
+  <div id="card-inspector-modal" onclick="if(event.target===this) closeCardInspector()" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm hidden flex items-center justify-center p-4 overflow-y-auto">
+    <div class="relative bg-retro-charcoal border-2 border-white/20 rounded-3xl max-w-3xl w-full p-6 sm:p-8 retro-shadow overflow-hidden my-auto">
+      <button onclick="closeCardInspector()" class="absolute top-4 right-4 z-10 text-white/60 hover:text-white bg-white/10 hover:bg-white/20 w-9 h-9 rounded-full flex items-center justify-center transition">
         ✕
       </button>
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 items-center">
-        <!-- CARD DISPLAY -->
-        <div class="flex justify-center">
-          <div class="relative w-48 card-ratio rounded-2xl bg-retro-cream border-2 border-black shadow-2xl p-1 overflow-hidden flex items-center justify-center">
-            <img id="modal-card-img" src="" alt="Inspected Card" class="w-full h-full object-cover rounded-xl" onerror="this.style.display='none';">
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+        <!-- LARGE HIGH-RES CARD DISPLAY -->
+        <div class="md:col-span-7 flex justify-center">
+          <div class="relative w-72 sm:w-80 md:w-96 card-ratio rounded-2xl bg-retro-cream border-2 border-black shadow-2xl p-1.5 overflow-hidden flex items-center justify-center">
+            <img id="modal-card-img" src="" alt="Inspected Card" class="w-full h-full object-contain rounded-xl" onerror="this.style.display='none';">
             <div id="modal-fallback-card" class="hidden absolute inset-0 flex-col items-center justify-center p-4 text-center bg-[#F5EEE2]">
-              <span id="modal-fallback-title" class="font-display text-3xl text-retro-charcoal">7</span>
-              <span id="modal-fallback-tag" class="text-[10px] font-headline uppercase text-retro-burgundy mt-1 font-bold">PIVOT</span>
+              <span id="modal-fallback-title" class="font-display text-4xl text-retro-charcoal">7</span>
+              <span id="modal-fallback-tag" class="text-xs font-headline uppercase text-retro-burgundy mt-1 font-bold">PIVOT</span>
             </div>
           </div>
         </div>
 
         <!-- CARD DETAILS -->
-        <div class="space-y-4">
+        <div class="md:col-span-5 space-y-5">
           <div>
-            <span id="modal-card-tag" class="text-[10px] font-headline uppercase tracking-wider text-retro-gold font-bold bg-retro-gold/20 px-2 py-0.5 rounded">Tag</span>
-            <h3 id="modal-card-title" class="text-3xl font-display text-white mt-1">CARD</h3>
+            <span id="modal-card-tag" class="text-xs font-headline uppercase tracking-wider text-retro-gold font-bold bg-retro-gold/20 px-2.5 py-1 rounded">Tag</span>
+            <h3 id="modal-card-title" class="text-3xl sm:text-4xl font-display text-white mt-2">CARD</h3>
           </div>
           
-          <p id="modal-card-desc" class="text-xs text-retro-cream/80 leading-relaxed font-sans">
+          <p id="modal-card-desc" class="text-sm text-retro-cream/85 leading-relaxed font-sans">
             Card description and gameplay tactical guidance.
           </p>
 
@@ -751,7 +765,7 @@
           </div>
 
           <div class="pt-4 border-t border-white/10">
-            <button onclick="closeCardInspector()" class="w-full bg-white/10 hover:bg-white/20 text-white font-headline text-xs font-bold py-2.5 rounded-xl transition">
+            <button onclick="closeCardInspector()" class="w-full bg-white/10 hover:bg-white/20 text-white font-headline text-xs font-bold py-3 rounded-xl transition">
               CLOSE INSPECTOR
             </button>
           </div>
@@ -798,9 +812,21 @@
   </div>
 
   <!-- ======================================================== -->
-  <!-- JAVASCRIPT: INDEXEDDB, ROUTER, CART & RENDER ENGINE      -->
+  <!-- JAVASCRIPT: ROUTER, KICKSTARTER, CART & RENDER ENGINE    -->
   <!-- ======================================================== -->
   <script>
+    // Replace with your live Kickstarter URL once published
+    const KICKSTARTER_URL = '';
+
+    function handleKickstarterClick(e) {
+      if (KICKSTARTER_URL) {
+        window.open(KICKSTARTER_URL, '_blank', 'noopener,noreferrer');
+      } else {
+        if (e) e.preventDefault();
+        showToast('Kickstarter pre-launch page coming soon! Join the Day-1 alert list.');
+      }
+    }
+
     // 1. CARDS ROSTER (22 CARDS)
     const DECK_CARDS = [
       { id: '1', title: '1', type: 'number', tag: 'Lowest Rank', desc: 'Predict HIGHER with 93% mathematical probability. An elite survival card.', img: '1.png' },
@@ -823,8 +849,7 @@
       { id: 'REORDER', title: 'REORDER', type: 'action', tag: 'Control (x2)', desc: 'Inspect next 3 cards of the Draw Pile and reorder them in any sequence.', img: 'REORDER.png' },
       { id: 'SWAP', title: 'SWAP', type: 'action', tag: 'Theft (x2)', desc: 'Swap 1 of your cards with an opponent’s card immediately.', img: 'SWAP.png' },
       { id: 'DOUBLE DOWN', title: 'DOUBLE DOWN', type: 'action', tag: 'Punisher (x2)', desc: 'Force an opponent to make 2 consecutive predictions on 1 card.', img: 'DOUBLE DOWN.png' },
-      { id: 'SPLIT', title: 'SPLIT', type: 'action', tag: 'Gamble (x2)', desc: 'Predict if target card is INSIDE or OUTSIDE the next 2 draws.', img: 'SPLIT.png' },
-      { id: 'HOW TO PLAY', title: 'HOW TO PLAY', type: 'guide', tag: 'Rules Guide', desc: 'Core turn rules: Deal 4, predict higher/lower/match, and survive.', img: 'HOW TO PLAY.png' }
+      { id: 'SPLIT', title: 'SPLIT', type: 'action', tag: 'Gamble (x2)', desc: 'Predict if target card is INSIDE or OUTSIDE the next 2 draws.', img: 'SPLIT.png' }
     ];
 
     // 2. VIEW NAVIGATION ROUTER
@@ -852,130 +877,8 @@
       }
     }
 
-    // 3. INDEXEDDB PERSISTENT STORAGE
-    const DB_NAME = 'MercGamingAssetsDB';
-    const DB_VERSION = 1;
-    const STORE_NAME = 'artworks';
-
-    function openDatabase() {
-      return new Promise((resolve, reject) => {
-        try {
-          const req = indexedDB.open(DB_NAME, DB_VERSION);
-          req.onupgradeneeded = (e) => {
-            const db = e.target.result;
-            if (!db.objectStoreNames.contains(STORE_NAME)) {
-              db.createObjectStore(STORE_NAME);
-            }
-          };
-          req.onsuccess = (e) => resolve(e.target.result);
-          req.onerror = (e) => reject(e.target.error);
-        } catch (err) {
-          reject(err);
-        }
-      });
-    }
-
-    async function saveAssetToDB(key, dataUrl) {
-      try {
-        const db = await openDatabase();
-        return new Promise((resolve, reject) => {
-          const tx = db.transaction([STORE_NAME], 'readwrite');
-          const store = tx.objectStore(STORE_NAME);
-          const req = store.put(dataUrl, key.toLowerCase().trim());
-          req.onsuccess = () => resolve(true);
-          req.onerror = () => reject(req.error);
-        });
-      } catch (err) {
-        console.warn('Storage unavailable:', err);
-      }
-    }
-
-    async function getAssetFromDB(key) {
-      try {
-        const db = await openDatabase();
-        return new Promise((resolve) => {
-          const tx = db.transaction([STORE_NAME], 'readonly');
-          const store = tx.objectStore(STORE_NAME);
-          const req = store.get(key.toLowerCase().trim());
-          req.onsuccess = () => resolve(req.result || null);
-          req.onerror = () => resolve(null);
-        });
-      } catch (err) {
-        return null;
-      }
-    }
-
-    async function clearAssetsFromDB() {
-      try {
-        const db = await openDatabase();
-        return new Promise((resolve, reject) => {
-          const tx = db.transaction([STORE_NAME], 'readwrite');
-          const store = tx.objectStore(STORE_NAME);
-          const req = store.clear();
-          req.onsuccess = () => resolve(true);
-          req.onerror = () => reject(req.error);
-        });
-      } catch (err) {
-        console.warn('Storage unavailable:', err);
-      }
-    }
-
-    // 4. RESTORE SAVED ASSETS
-    async function restoreSavedAssets() {
-      try {
-        // Logo
-        const savedLogo = await getAssetFromDB('merc gaming co logo.png');
-        if (savedLogo) {
-          const navLogoImg = document.getElementById('nav-logo-img');
-          const navLogoSvg = document.getElementById('nav-logo-svg');
-          if (navLogoImg) {
-            navLogoImg.src = savedLogo;
-            navLogoImg.classList.remove('hidden');
-          }
-          if (navLogoSvg) navLogoSvg.classList.add('hidden');
-        }
-
-        // Hero Cards & Spotlight Cards
-        const heroDD = await getAssetFromDB('DOUBLE DOWN.png');
-        if (heroDD) {
-          const el = document.getElementById('hero-img-doubledown');
-          if (el) el.src = heroDD;
-          const hLeft = document.getElementById('home-spot-left');
-          if (hLeft) hLeft.src = heroDD;
-        }
-
-        const hero14 = await getAssetFromDB('14.png');
-        if (hero14) {
-          const el = document.getElementById('hero-img-14');
-          if (el) el.src = hero14;
-          const hRight = document.getElementById('home-spot-right');
-          if (hRight) hRight.src = hero14;
-        }
-
-        const hero7 = await getAssetFromDB('7.png');
-        if (hero7) {
-          const el = document.getElementById('hero-img-7');
-          if (el) el.src = hero7;
-          const hCenter = document.getElementById('home-spot-center');
-          if (hCenter) hCenter.src = hero7;
-        }
-
-        // Table Layout Diagram
-        const savedLayout = await getAssetFromDB('LAYOUT.jpg');
-        if (savedLayout) {
-          const layoutImg = document.getElementById('layout-diagram-img');
-          if (layoutImg) layoutImg.src = savedLayout;
-        }
-
-        // Vault cards
-        renderDeckCards('all');
-      } catch (err) {
-        console.warn('Error during asset restore:', err);
-      }
-    }
-
-    // 5. RENDER CARD VAULT
-    async function renderDeckCards(filter = 'all') {
+    // 3. RENDER CARD VAULT
+    function renderDeckCards(filter = 'all') {
       const container = document.getElementById('cards-grid');
       if (!container) return;
       container.innerHTML = '';
@@ -989,15 +892,14 @@
       });
 
       for (const card of filtered) {
-        const savedUrl = await getAssetFromDB(card.img);
         const cardBox = document.createElement('div');
         cardBox.className = 'group relative flex flex-col items-center bg-retro-charcoal border-2 border-white/10 hover:border-retro-gold rounded-2xl p-3.5 transition retro-shadow hover:-translate-y-1.5 cursor-pointer';
         cardBox.onclick = () => openCardInspector(card.id);
 
         cardBox.innerHTML = `
           <div class="relative w-full card-ratio rounded-xl overflow-hidden bg-retro-cream border-2 border-black flex items-center justify-center">
-            <img src="${savedUrl || card.img}" alt="${card.title}" class="w-full h-full object-cover rounded-lg" onerror="this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='flex';">
-            <div class="${savedUrl ? 'hidden' : 'flex'} absolute inset-0 flex-col items-center justify-center p-2 text-center bg-[#F5EEE2]">
+            <img src="${card.img}" alt="${card.title}" class="w-full h-full object-cover rounded-lg" onerror="this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='flex';">
+            <div class="hidden absolute inset-0 flex-col items-center justify-center p-2 text-center bg-[#F5EEE2]">
               <span class="font-display text-2xl text-retro-charcoal">${card.title}</span>
               <span class="text-[9px] font-headline uppercase text-retro-burgundy mt-1 font-bold">${card.tag}</span>
             </div>
@@ -1014,8 +916,8 @@
       }
     }
 
-    // 6. CARD INSPECTOR MODAL
-    async function openCardInspector(cardId) {
+    // 4. CARD INSPECTOR MODAL
+    function openCardInspector(cardId) {
       const card = DECK_CARDS.find(c => c.id === cardId);
       if (!card) return;
       const modal = document.getElementById('card-inspector-modal');
@@ -1029,8 +931,7 @@
       tagEl.textContent = card.tag;
       descEl.textContent = card.desc;
 
-      const savedUrl = await getAssetFromDB(card.img);
-      imgEl.src = savedUrl || card.img;
+      imgEl.src = card.img;
       imgEl.style.display = 'block';
 
       if (statsEl) {
@@ -1071,29 +972,7 @@
     window.openCardInspector = openCardInspector;
     window.openInspectorModal = openCardInspector;
 
-    // 7. FILE UPLOADER & DRAG-AND-DROP
-    async function handleFiles(files) {
-      if (!files || !files.length) return;
-      let count = 0;
-      for (const file of Array.from(files)) {
-        const name = file.name.trim();
-        const dataUrl = await readFileDataURL(file);
-        await saveAssetToDB(name, dataUrl);
-        count++;
-      }
-      await restoreSavedAssets();
-      showToast(`Saved ${count} assets permanently to browser memory!`);
-    }
-
-    function readFileDataURL(file) {
-      return new Promise((resolve) => {
-        const reader = new FileReader();
-        reader.onload = (e) => resolve(e.target.result);
-        reader.readAsDataURL(file);
-      });
-    }
-
-    // 8. SHOPPING CART
+    // 5. SHOPPING CART
     let cart = [];
 
     function addToCart(id, name, price) {
@@ -1169,7 +1048,7 @@
       setTimeout(() => toast.classList.add('opacity-0', 'pointer-events-none'), 3000);
     }
 
-    // 9. BOOTSTRAP ON LOAD
+    // 6. BOOTSTRAP ON LOAD
     window.addEventListener('DOMContentLoaded', () => {
       // Set Year
       const yrEl = document.getElementById('current-year');
@@ -1188,35 +1067,8 @@
         });
       });
 
-      // Asset Upload & Reset Buttons
-      const uploadBtn = document.getElementById('asset-upload-btn');
-      const fileInput = document.getElementById('asset-file-input');
-      const resetBtn = document.getElementById('asset-reset-btn');
-
-      if (uploadBtn && fileInput) {
-        uploadBtn.addEventListener('click', () => fileInput.click());
-        fileInput.addEventListener('change', (e) => handleFiles(e.target.files));
-      }
-
-      if (resetBtn) {
-        resetBtn.addEventListener('click', async () => {
-          await clearAssetsFromDB();
-          showToast('Asset memory cleared.');
-          setTimeout(() => location.reload(), 600);
-        });
-      }
-
-      // Drag and drop anywhere on the window
-      window.addEventListener('dragover', (e) => e.preventDefault());
-      window.addEventListener('drop', (e) => {
-        e.preventDefault();
-        if (e.dataTransfer && e.dataTransfer.files) {
-          handleFiles(e.dataTransfer.files);
-        }
-      });
-
-      // Initial restore & render
-      restoreSavedAssets();
+      // Initial render
+      renderDeckCards('all');
       updateCart();
     });
   </script>
