@@ -1,0 +1,1224 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Merc Gaming Co. | Independent Tabletop Games</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Google Fonts: Bungee (Logos/Headers) & Space Grotesk / Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            retro: {
+              burgundy: '#7D0827',
+              orange: '#E64A19',
+              gold: '#F59E0B',
+              mint: '#8CD2B4',
+              teal: '#009688',
+              cream: '#F4ECE1',
+              charcoal: '#1E1B18',
+              dark: '#141312'
+            }
+          },
+          fontFamily: {
+            display: ['Bungee', 'cursive'],
+            headline: ['"Space Grotesk"', 'sans-serif'],
+            sans: ['Inter', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    .font-display { font-family: 'Bungee', cursive; }
+    .card-ratio { aspect-ratio: 5 / 7; }
+    .retro-shadow { box-shadow: 6px 6px 0px 0px rgba(0, 0, 0, 0.7); }
+    .retro-shadow-sm { box-shadow: 3px 3px 0px 0px rgba(0, 0, 0, 0.8); }
+    
+    /* 1970s Striped Ribbon Border */
+    .retro-ribbon-bar {
+      background: linear-gradient(to right, 
+        #7D0827 0%, #7D0827 20%, 
+        #E64A19 20%, #E64A19 40%, 
+        #F59E0B 40%, #F59E0B 60%, 
+        #8CD2B4 60%, #8CD2B4 80%, 
+        #009688 80%, #009688 100%
+      );
+      height: 6px;
+    }
+  </style>
+</head>
+<body class="bg-[#141312] text-retro-cream min-h-screen font-sans flex flex-col selection:bg-retro-orange selection:text-white">
+
+  <!-- TOP 1970s STRIPED RIBBON -->
+  <div class="retro-ribbon-bar w-full"></div>
+
+  <!-- PERSISTENT ARTWORK LOADER & LOCAL MEMORY STATUS BAR -->
+  <aside aria-label="Artwork Manager" class="bg-[#1C1A18] border-b border-white/10 px-4 py-2.5">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3 text-xs">
+      <div class="flex items-center gap-2">
+        <span class="w-2.5 h-2.5 rounded-full bg-retro-mint animate-pulse"></span>
+        <span class="font-headline font-bold text-white uppercase tracking-wider">IndexedDB Asset Vault</span>
+        <span class="text-white/40 hidden sm:inline">• Drop your card PNGs & logo here anytime</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <input type="file" id="asset-file-input" multiple accept="image/*" class="hidden">
+        <button id="asset-upload-btn" class="bg-retro-gold hover:bg-amber-400 text-black font-headline font-bold px-3 py-1.5 rounded-lg text-xs transition retro-shadow-sm flex items-center gap-1.5">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
+          <span>CHOOSE / DROP PNGs</span>
+        </button>
+        <button id="asset-reset-btn" class="bg-white/10 hover:bg-white/20 text-white/70 hover:text-white font-headline text-xs px-2.5 py-1.5 rounded-lg transition">
+          RESET
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- NAVIGATION BAR -->
+  <header class="sticky top-0 z-40 bg-[#161514]/95 backdrop-blur border-b border-white/10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      
+      <!-- LOGO (INTERLOCKING M + BUNGEE TEXT) -->
+      <a href="javascript:void(0)" onclick="navigateToView('home')" class="flex items-center gap-3.5 group">
+        <div class="relative w-10 h-10 flex items-center justify-center bg-black/40 border border-white/10 rounded-xl p-1.5">
+          <!-- Vector Interlocking M fallback -->
+          <svg id="nav-logo-svg" class="w-full h-full text-white" viewBox="0 0 100 100" fill="currentColor">
+            <path d="M10 85 V20 L50 60 L90 20 V85 H74 V40 L50 64 L26 40 V85 Z" fill="currentColor"/>
+          </svg>
+          <img id="nav-logo-img" alt="Merc Gaming Co. Logo" class="hidden w-full h-full object-contain rounded-lg">
+        </div>
+        <div class="flex flex-col">
+          <span class="font-display text-lg sm:text-xl text-white tracking-wide leading-none group-hover:text-retro-gold transition">MERC</span>
+          <span class="font-display text-[10px] sm:text-xs text-retro-gold tracking-widest leading-none mt-0.5">GAMING CO.</span>
+        </div>
+      </a>
+
+      <!-- NAV TABS -->
+      <nav class="hidden md:flex items-center space-x-7 text-xs font-headline uppercase tracking-wider font-bold">
+        <button onclick="navigateToView('home')" id="nav-btn-home" class="text-retro-gold transition flex items-center gap-1.5">
+          <span>Studio Home</span>
+        </button>
+        <button onclick="navigateToView('game')" id="nav-btn-game" class="text-white/80 hover:text-retro-gold transition flex items-center gap-1.5">
+          <span>Last Card Standing</span>
+          <span class="text-[9px] bg-retro-orange text-white px-1.5 py-0.5 rounded font-display">FLAGSHIP</span>
+        </button>
+        <a href="#games-catalog" onclick="if(currentView!=='home') navigateToView('home');" class="text-white/80 hover:text-retro-gold transition">Pipeline</a>
+        <a href="#store" class="text-white/80 hover:text-retro-gold transition">Merch & Store</a>
+      </nav>
+
+      <!-- CART TRIGGER -->
+      <div class="flex items-center gap-4">
+        <button onclick="toggleCartDrawer()" class="relative bg-white/10 hover:bg-white/15 text-white p-2.5 rounded-xl border border-white/10 transition flex items-center gap-2">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+          <span id="cart-badge" class="bg-retro-orange text-white font-display text-[10px] w-5 h-5 rounded-full flex items-center justify-center">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ======================================================== -->
+  <!-- MAIN CONTAINER (PAGE ROUTER: HOME VIEW VS GAME VIEW)    -->
+  <!-- ======================================================== -->
+  <main class="flex-grow">
+    
+    <!-- ====================================================== -->
+    <!-- VIEW 1: MERC GAMING CO. STUDIO LANDING PAGE            -->
+    <!-- ====================================================== -->
+    <div id="view-home" class="transition-opacity duration-300">
+      
+      <!-- HERO: STUDIO MISSION -->
+      <section class="relative pt-16 pb-24 border-b border-white/10 bg-gradient-to-b from-[#1C1A18] via-[#161514] to-[#121110]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
+          
+          <div class="inline-flex items-center gap-2 bg-retro-gold/15 text-retro-gold px-4 py-1.5 rounded-full text-xs font-bold border border-retro-gold/30 uppercase tracking-widest">
+            <span>★</span> Independent Tabletop Game Studio
+          </div>
+
+          <h1 class="text-4xl sm:text-6xl lg:text-7xl font-display uppercase tracking-tight text-white leading-tight max-w-5xl mx-auto">
+            TABLETOP GAMES BUILT TO CAUSE <span class="text-retro-orange">CHAOS</span>
+          </h1>
+
+          <p class="text-base sm:text-lg text-retro-cream/80 leading-relaxed max-w-2xl mx-auto">
+            Welcome to <strong class="text-white">Merc Gaming Co.</strong> We craft high-energy tabletop games wrapped in 1970s striped aesthetics, instant 60-second rules, press-your-luck psych-outs, and table banter.
+          </p>
+
+          <div class="flex flex-wrap items-center justify-center gap-4 pt-4">
+            <button onclick="navigateToView('game')" class="bg-retro-orange hover:bg-orange-600 text-white font-display text-xs tracking-wider px-8 py-4 rounded-xl transition retro-shadow flex items-center gap-2">
+              <span>EXPLORE FLAGSHIP: LAST CARD STANDING</span>
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+            </button>
+            <a href="#games-catalog" class="bg-white/10 hover:bg-white/15 text-white font-headline font-bold text-xs px-7 py-4 rounded-xl border border-white/20 transition">
+              VIEW PIPELINE
+            </a>
+          </div>
+
+          <!-- 3 PILLARS -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-12 text-left max-w-5xl mx-auto">
+            <div class="bg-retro-charcoal border border-white/10 rounded-2xl p-5 retro-shadow-sm">
+              <span class="font-display text-retro-burgundy text-xl">01</span>
+              <h4 class="font-display text-white text-base mt-2">60-SECOND TEACH</h4>
+              <p class="text-xs text-retro-cream/70 mt-1.5 leading-relaxed">No 40-page instruction books. Open the box, deal the cards, and start shouting on round one.</p>
+            </div>
+            <div class="bg-retro-charcoal border border-white/10 rounded-2xl p-5 retro-shadow-sm">
+              <span class="font-display text-retro-gold text-xl">02</span>
+              <h4 class="font-display text-white text-base mt-2">TACTILE QUALITY</h4>
+              <p class="text-xs text-retro-cream/70 mt-1.5 leading-relaxed">Casino black-core 330gsm cardstock, premium linen texture, and 1970s striped palettes.</p>
+            </div>
+            <div class="bg-retro-charcoal border border-white/10 rounded-2xl p-5 retro-shadow-sm">
+              <span class="font-display text-retro-teal text-xl">03</span>
+              <h4 class="font-display text-white text-base mt-2">TABLE FRICTION</h4>
+              <p class="text-xs text-retro-cream/70 mt-1.5 leading-relaxed">Every mechanic is tuned for high-stakes bluffing, revenge targets, and memorable table talk.</p>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- FEATURED SPOTLIGHT: LAST CARD STANDING -->
+      <section class="py-16 bg-[#161514] border-b border-white/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="bg-gradient-to-r from-retro-charcoal via-[#23201D] to-retro-charcoal border-2 border-white/15 rounded-3xl p-8 sm:p-12 retro-shadow">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+              
+              <div class="lg:col-span-7 space-y-5">
+                <span class="bg-retro-orange/20 text-retro-orange text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full border border-retro-orange/30">
+                  FLAGSHIP TITLE • READY TO PLAY
+                </span>
+                <h2 class="text-3xl sm:text-5xl font-display uppercase text-white tracking-tight">
+                  LAST CARD STANDING
+                </h2>
+                <p class="text-retro-cream/80 text-sm sm:text-base leading-relaxed">
+                  The original 1970s prediction showdown. Each player begins with 4 base cards face-up. Predict HIGHER, LOWER, or MATCH to survive—while slinging 7 brutal action cards like <strong class="text-retro-gold">Double Down</strong>, <strong class="text-retro-teal">Trap</strong>, and <strong class="text-retro-mint">Loop</strong> to eliminate your rivals.
+                </p>
+
+                <div class="flex flex-wrap items-center gap-4 pt-2">
+                  <button onclick="navigateToView('game')" class="bg-retro-orange hover:bg-orange-600 text-white font-display text-xs tracking-wider px-6 py-3.5 rounded-xl transition retro-shadow-sm flex items-center gap-2">
+                    <span>ENTER GAME EXPERIENCE & VAULT</span>
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                  </button>
+                  <button onclick="addToCart('core-deck', 'Last Card Standing - Core Deck', 24.99)" class="bg-white/10 hover:bg-white/20 text-white font-headline text-xs font-bold px-6 py-3.5 rounded-xl transition">
+                    ORDER CORE DECK • $24.99
+                  </button>
+                </div>
+              </div>
+
+              <!-- MINI CARD FAN CALLOUT -->
+              <div class="lg:col-span-5 flex justify-center cursor-pointer" onclick="navigateToView('game')">
+                <div class="relative w-64 h-80 flex items-center justify-center">
+                  <!-- Left: DOUBLE DOWN -->
+                  <div class="absolute left-2 w-36 card-ratio rounded-xl bg-retro-cream border-2 border-black -rotate-12 shadow-xl overflow-hidden p-1">
+                    <img id="home-spot-left" src="DOUBLE DOWN.png" alt="Double Down Card" class="w-full h-full object-cover rounded-lg" onerror="this.style.display='none';">
+                  </div>
+                  <!-- Right: 14 -->
+                  <div class="absolute right-2 w-36 card-ratio rounded-xl bg-retro-cream border-2 border-black rotate-12 shadow-xl overflow-hidden p-1">
+                    <img id="home-spot-right" src="14.png" alt="14 Card" class="w-full h-full object-cover rounded-lg" onerror="this.style.display='none';">
+                  </div>
+                  <!-- Center: 7 -->
+                  <div class="relative w-40 card-ratio rounded-xl bg-retro-cream border-4 border-black z-20 shadow-2xl overflow-hidden p-1 transform hover:scale-105 transition">
+                    <img id="home-spot-center" src="7.png" alt="7 Card" class="w-full h-full object-cover rounded-lg" onerror="this.style.display='none';">
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- MULTI-GAME PIPELINE SECTION -->
+      <section id="games-catalog" class="py-20 bg-[#121110] border-b border-white/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          
+          <div class="text-center max-w-2xl mx-auto mb-14">
+            <span class="text-xs font-headline uppercase tracking-widest text-retro-gold font-bold">Merc Game Roster</span>
+            <h2 class="text-3xl sm:text-5xl font-display uppercase text-white mt-1">THE STUDIO PIPELINE</h2>
+            <p class="text-retro-cream/70 mt-2 text-sm">
+              Discover active releases and upcoming titles currently on our playtesting tables.
+            </p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            
+            <!-- GAME 01: LAST CARD STANDING -->
+            <div class="bg-retro-charcoal border-2 border-retro-orange rounded-2xl p-6 retro-shadow flex flex-col justify-between">
+              <div>
+                <div class="flex items-center justify-between mb-2">
+                  <span class="text-xs font-headline uppercase tracking-wider text-retro-gold font-bold">Merc Game #01</span>
+                  <span class="bg-retro-orange text-white text-[9px] font-display px-2 py-0.5 rounded-full">ACTIVE</span>
+                </div>
+                <h3 class="text-2xl font-display text-white">LAST CARD STANDING</h3>
+                <p class="text-xs text-retro-mint font-bold uppercase mt-1">High-Stakes Prediction & Elimination</p>
+                <p class="text-xs text-retro-cream/70 mt-3 leading-relaxed">
+                  Deal 4 base cards, predict higher, lower, or match from the draw pile, and play 7 game-changing Action cards to survive until the final showdown.
+                </p>
+                <div class="flex items-center gap-3 mt-4 text-[11px] text-white/50 font-headline">
+                  <span>2–6 Players</span> • <span>15–25 Min</span> • <span>Ages 10+</span>
+                </div>
+              </div>
+              <div class="mt-6 pt-4 border-t border-white/10">
+                <button onclick="navigateToView('game')" class="w-full bg-retro-orange hover:bg-orange-600 text-white font-headline text-xs font-bold py-3 rounded-xl transition text-center">
+                  VIEW GAME & RULES →
+                </button>
+              </div>
+            </div>
+
+            <!-- GAME 02: OVERTIME SHAKEDOWN (UPCOMING) -->
+            <div class="bg-retro-charcoal/70 border border-white/10 rounded-2xl p-6 retro-shadow flex flex-col justify-between">
+              <div>
+                <div class="flex items-center justify-between mb-2">
+                  <span class="text-xs font-headline uppercase tracking-wider text-white/40 font-bold">Merc Game #02</span>
+                  <span class="bg-white/10 text-retro-mint text-[9px] font-display px-2 py-0.5 rounded-full">PLAYTESTING</span>
+                </div>
+                <h3 class="text-2xl font-display text-white">OVERTIME SHAKEDOWN</h3>
+                <p class="text-xs text-retro-teal font-bold uppercase mt-1">Casino Heist & Hidden Roles</p>
+                <p class="text-xs text-retro-cream/70 mt-3 leading-relaxed">
+                  Tension-fueled social deduction set inside a 1978 vault heist. Collect blueprint keys, bribe guards, and identify the rat before the sirens trip.
+                </p>
+                <div class="flex items-center gap-3 mt-4 text-[11px] text-white/50 font-headline">
+                  <span>3–8 Players</span> • <span>30 Min</span> • <span>Coming 2026</span>
+                </div>
+              </div>
+              <div class="mt-6 pt-4 border-t border-white/10">
+                <button onclick="showToast('Subscribed to Overtime Shakedown VIP playtest list!')" class="w-full bg-white/10 hover:bg-white/20 text-white font-headline text-xs font-bold py-3 rounded-xl transition">
+                  REQUEST PLAYTEST PACK
+                </button>
+              </div>
+            </div>
+
+            <!-- GAME 03: SPEED PIT (UPCOMING) -->
+            <div class="bg-retro-charcoal/70 border border-white/10 rounded-2xl p-6 retro-shadow flex flex-col justify-between">
+              <div>
+                <div class="flex items-center justify-between mb-2">
+                  <span class="text-xs font-headline uppercase tracking-wider text-white/40 font-bold">Merc Game #03</span>
+                  <span class="bg-white/10 text-retro-gold text-[9px] font-display px-2 py-0.5 rounded-full">IN LAB</span>
+                </div>
+                <h3 class="text-2xl font-display text-white">SPEED PIT</h3>
+                <p class="text-xs text-retro-burgundy font-bold uppercase mt-1">Simultaneous Dice & Drift Racing</p>
+                <p class="text-xs text-retro-cream/70 mt-3 leading-relaxed">
+                  Push your luck down a retro asphalt track. Gear shifts, tire spinouts, slipstream passes, and zero waiting between player turns.
+                </p>
+                <div class="flex items-center gap-3 mt-4 text-[11px] text-white/50 font-headline">
+                  <span>2–4 Players</span> • <span>20 Min</span> • <span>Concept Phase</span>
+                </div>
+              </div>
+              <div class="mt-6 pt-4 border-t border-white/10">
+                <button onclick="showToast('Notified! We will email you once prototypes print.')" class="w-full bg-white/10 hover:bg-white/20 text-white font-headline text-xs font-bold py-3 rounded-xl transition">
+                  FOLLOW DEVELOPMENT
+                </button>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+    </div>
+
+    <!-- ====================================================== -->
+    <!-- VIEW 2: DEDICATED LAST CARD STANDING GAME EXPERIENCE   -->
+    <!-- ====================================================== -->
+    <div id="view-game" class="hidden transition-opacity duration-300">
+      
+      <!-- BREADCRUMB HEADER -->
+      <div class="bg-retro-charcoal/90 border-b border-white/10 py-3.5 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto flex items-center justify-between text-xs font-headline">
+          <button onclick="navigateToView('home')" class="text-retro-gold hover:text-white flex items-center gap-1.5 transition font-bold">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+            <span>BACK TO MERC STUDIO HOME</span>
+          </button>
+          <div class="flex items-center gap-2 text-white/40">
+            <span>Games</span>
+            <span>/</span>
+            <span class="text-white font-bold">Last Card Standing</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- HERO: LAST CARD STANDING -->
+      <section class="relative pt-12 pb-20 border-b border-white/10 bg-gradient-to-b from-[#1C1A18] to-[#121110]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            
+            <div class="lg:col-span-7 space-y-6">
+              <div class="inline-flex items-center gap-2 bg-retro-orange/20 text-retro-orange px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider border border-retro-orange/30">
+                <span>★</span> The 1970s Prediction & Sabotage Card Game
+              </div>
+              <h1 class="text-4xl sm:text-6xl font-display uppercase tracking-tight text-white leading-tight">
+                LAST CARD <span class="text-retro-orange">STANDING</span>
+              </h1>
+              <p class="text-base sm:text-lg text-retro-cream/80 leading-relaxed">
+                Start with 4 base cards face-up. Predict <strong class="text-retro-gold">HIGHER</strong>, <strong class="text-retro-teal">LOWER</strong>, or call <strong class="text-retro-mint">MATCH</strong> to push opponents into forced bets. Guess wrong and your card is sent to the Number Discard. When everyone else is wiped out, the player with the Last Card Standing wins.
+              </p>
+
+              <!-- SPECS BAR -->
+              <div class="grid grid-cols-4 gap-2 pt-2 text-center max-w-md">
+                <div class="bg-retro-charcoal border border-white/10 rounded-xl p-2.5">
+                  <span class="text-[10px] uppercase font-headline text-white/50">Players</span>
+                  <p class="font-display text-sm text-retro-gold">2–6</p>
+                </div>
+                <div class="bg-retro-charcoal border border-white/10 rounded-xl p-2.5">
+                  <span class="text-[10px] uppercase font-headline text-white/50">Pace</span>
+                  <p class="font-display text-sm text-retro-mint">15 Min</p>
+                </div>
+                <div class="bg-retro-charcoal border border-white/10 rounded-xl p-2.5">
+                  <span class="text-[10px] uppercase font-headline text-white/50">Ages</span>
+                  <p class="font-display text-sm text-retro-orange">10+</p>
+                </div>
+                <div class="bg-retro-charcoal border border-white/10 rounded-xl p-2.5">
+                  <span class="text-[10px] uppercase font-headline text-white/50">Deck</span>
+                  <p class="font-display text-sm text-retro-teal">22 Cards</p>
+                </div>
+              </div>
+
+              <!-- BUTTONS -->
+              <div class="flex flex-wrap items-center gap-4 pt-4">
+                <button onclick="addToCart('core-deck', 'Last Card Standing - Core Deck', 24.99)" class="bg-retro-orange hover:bg-orange-600 text-white font-display text-xs tracking-wider px-8 py-4 rounded-xl transition retro-shadow flex items-center gap-2">
+                  <span>ORDER DECK • $24.99</span>
+                </button>
+                <a href="#deck-vault" class="bg-white/10 hover:bg-white/15 text-white font-headline text-xs font-bold px-6 py-4 rounded-xl border border-white/20 transition">
+                  INSPECT CARDS & RULES
+                </a>
+                <a href="#table-layout" class="bg-white/10 hover:bg-white/15 text-white font-headline text-xs font-bold px-6 py-4 rounded-xl border border-white/20 transition">
+                  TABLE SETUP
+                </a>
+              </div>
+            </div>
+
+            <!-- HERO 3-CARD FAN -->
+            <div class="lg:col-span-5 flex justify-center py-6">
+              <div class="relative w-72 h-96 flex items-center justify-center">
+                
+                <!-- Left Wing: DOUBLE DOWN -->
+                <div onclick="openCardInspector('DOUBLE DOWN')" class="absolute left-0 w-44 card-ratio rounded-2xl bg-retro-cream border-2 border-black -rotate-12 z-10 shadow-2xl p-1 cursor-pointer transform hover:-translate-y-2 hover:-rotate-6 transition duration-300">
+                  <img id="hero-img-doubledown" src="DOUBLE DOWN.png" alt="Double Down Action Card" class="w-full h-full object-cover rounded-xl" onerror="this.style.display='none';">
+                </div>
+
+                <!-- Right Wing: 14 -->
+                <div onclick="openCardInspector('14')" class="absolute right-0 w-44 card-ratio rounded-2xl bg-retro-cream border-2 border-black rotate-12 z-10 shadow-2xl p-1 cursor-pointer transform hover:-translate-y-2 hover:rotate-6 transition duration-300">
+                  <img id="hero-img-14" src="14.png" alt="14 Apex Number Card" class="w-full h-full object-cover rounded-xl" onerror="this.style.display='none';">
+                </div>
+
+                <!-- Center: 7 -->
+                <div onclick="openCardInspector('7')" class="relative w-48 card-ratio rounded-2xl bg-retro-cream border-4 border-black z-20 shadow-2xl p-1 cursor-pointer transform hover:scale-105 transition duration-300">
+                  <img id="hero-img-7" src="7.png" alt="7 Center Pivot Number Card" class="w-full h-full object-cover rounded-xl" onerror="this.style.display='none';">
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- CARD VAULT SECTION (ALL 22 CARDS) -->
+      <section id="deck-vault" class="py-20 bg-[#161514] border-b border-white/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          
+          <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+            <div>
+              <span class="text-xs font-headline uppercase tracking-widest text-retro-gold font-bold">Interactive Card Vault</span>
+              <h2 class="text-3xl sm:text-5xl font-display uppercase text-white mt-1">THE 22-CARD DECK</h2>
+              <p class="text-retro-cream/70 mt-2 text-sm max-w-xl">
+                Inspect every card in the game: 14 numbered base cards, all 7 sabotage Action cards, and the quick-reference rules guide. Click any card to inspect full odds and tactics.
+              </p>
+            </div>
+
+            <!-- FILTERS -->
+            <div class="flex flex-wrap gap-2 text-xs font-headline font-bold">
+              <button class="vault-filter-btn px-4 py-2 rounded-xl bg-retro-orange text-white transition" data-filter="all">ALL CARDS (22)</button>
+              <button class="vault-filter-btn px-4 py-2 rounded-xl bg-white/10 text-retro-cream hover:bg-white/20 transition" data-filter="number">NUMBERS (1–14)</button>
+              <button class="vault-filter-btn px-4 py-2 rounded-xl bg-white/10 text-retro-cream hover:bg-white/20 transition" data-filter="action">ACTIONS (7)</button>
+              <button class="vault-filter-btn px-4 py-2 rounded-xl bg-white/10 text-retro-cream hover:bg-white/20 transition" data-filter="rules">HOW TO PLAY</button>
+            </div>
+          </div>
+
+          <!-- CARDS GRID -->
+          <div id="cards-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 sm:gap-6">
+            <!-- Populated via JavaScript -->
+          </div>
+
+        </div>
+      </section>
+
+      <!-- OFFICIAL TABLE LAYOUT SECTION -->
+      <section id="table-layout" class="py-20 bg-[#121110] border-b border-white/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          
+          <div class="text-center max-w-2xl mx-auto mb-14">
+            <span class="text-xs font-headline uppercase tracking-widest text-retro-gold font-bold">Tabletop Architecture</span>
+            <h2 class="text-3xl sm:text-5xl font-display uppercase text-white mt-1">OFFICIAL TABLE LAYOUT</h2>
+            <p class="text-retro-cream/70 mt-2 text-sm">
+              Standard 4-player setup showing the central deck piles and face-up base card arrays.
+            </p>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+            
+            <!-- TABLE DIAGRAM IMAGE -->
+            <div class="lg:col-span-7 flex justify-center">
+              <div class="relative w-full max-w-lg card-ratio bg-retro-charcoal border-4 border-black rounded-3xl p-4 retro-shadow flex items-center justify-center overflow-hidden">
+                <img id="layout-diagram-img" src="LAYOUT.jpg" alt="Official Table Layout Diagram" class="w-full h-full object-contain rounded-2xl" onerror="this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='flex';">
+                <!-- Fallback Diagram if unhosted -->
+                <div class="hidden absolute inset-0 flex-col items-center justify-center p-6 text-center bg-[#1A1816]">
+                  <span class="font-display text-retro-gold text-2xl">TABLE LAYOUT</span>
+                  <p class="text-xs text-white/60 mt-2">Drop LAYOUT.jpg into the Asset Vault above to display your official high-res table diagram.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- LAYOUT RULES BREAKDOWN -->
+            <div class="lg:col-span-5 space-y-6">
+              
+              <div class="bg-retro-charcoal border border-white/10 rounded-2xl p-5">
+                <div class="flex items-center gap-3">
+                  <span class="w-8 h-8 rounded-lg bg-retro-orange/20 text-retro-orange font-display flex items-center justify-center text-xs">01</span>
+                  <h4 class="font-display text-white text-base">4 BASE CARDS PER PLAYER</h4>
+                </div>
+                <p class="text-xs text-retro-cream/70 mt-2 leading-relaxed">
+                  Every player starts with 4 Number cards placed face-up in front of them. If an Action card is dealt during setup, reshuffle it into the Draw Pile immediately.
+                </p>
+              </div>
+
+              <div class="bg-retro-charcoal border border-white/10 rounded-2xl p-5">
+                <div class="flex items-center gap-3">
+                  <span class="w-8 h-8 rounded-lg bg-retro-gold/20 text-retro-gold font-display flex items-center justify-center text-xs">02</span>
+                  <h4 class="font-display text-white text-base">DRAW PILE & NUMBER DISCARD</h4>
+                </div>
+                <p class="text-xs text-retro-cream/70 mt-2 leading-relaxed">
+                  Center draw deck. Whenever a player makes a wrong guess, that card goes to the Number Discard. When the Draw Pile runs dry, <strong class="text-white">only the Number Discard is reshuffled</strong>.
+                </p>
+              </div>
+
+              <div class="bg-retro-charcoal border border-white/10 rounded-2xl p-5">
+                <div class="flex items-center gap-3">
+                  <span class="w-8 h-8 rounded-lg bg-retro-burgundy/20 text-retro-burgundy font-display flex items-center justify-center text-xs">03</span>
+                  <h4 class="font-display text-white text-base">ACTION DISCARD (PERMANENT)</h4>
+                </div>
+                <p class="text-xs text-retro-cream/70 mt-2 leading-relaxed">
+                  Played Action cards are sent to the dedicated Action Discard pile. <strong class="text-retro-orange">Action cards are never reshuffled back into the draw deck</strong>, making deck tracking essential as the endgame approaches.
+                </p>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+      <!-- RULES SUMMARY ACCORDION / GUIDE -->
+      <section id="rules-guide" class="py-20 bg-[#161514] border-b border-white/10">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          
+          <div class="text-center mb-12">
+            <span class="text-xs font-headline uppercase tracking-widest text-retro-gold font-bold">Rulebook Condensed</span>
+            <h2 class="text-3xl sm:text-4xl font-display uppercase text-white mt-1">HOW TURNS WORK</h2>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="bg-retro-charcoal border border-white/10 rounded-2xl p-6 space-y-3">
+              <h4 class="font-display text-retro-gold text-lg">PREDICT & FLIP</h4>
+              <p class="text-xs text-retro-cream/80 leading-relaxed">
+                On your turn, choose one of your face-up cards and call <strong class="text-white">HIGHER</strong>, <strong class="text-white">LOWER</strong>, or <strong class="text-white">MATCH</strong>. Flip the top card of the Draw Pile.
+              </p>
+              <ul class="text-xs text-white/70 space-y-1.5 list-disc pl-4">
+                <li><strong>Correct Guess:</strong> You stay alive and force any opponent to predict on a card of your choice.</li>
+                <li><strong>Incorrect Guess:</strong> Your base card is discarded to the Number Discard pile.</li>
+                <li><strong>Ties:</strong> Ties lose automatically unless MATCH was explicitly called.</li>
+              </ul>
+            </div>
+
+            <div class="bg-retro-charcoal border border-white/10 rounded-2xl p-6 space-y-3">
+              <h4 class="font-display text-retro-teal text-lg">ACTION CARDS (MAX 1 HELD)</h4>
+              <p class="text-xs text-retro-cream/80 leading-relaxed">
+                When drawn during a flip, an Action card can be played immediately or held for a future turn (maximum of 1 in hand).
+              </p>
+              <ul class="text-xs text-white/70 space-y-1.5 list-disc pl-4">
+                <li><strong>DOUBLE DOWN:</strong> Force an opponent to make 2 consecutive predictions on 1 card.</li>
+                <li><strong>TRAP:</strong> Set a blind card face-down that an opponent must flip on their turn.</li>
+                <li><strong>LOOP:</strong> Locks an opponent onto a single card until they miss a guess.</li>
+              </ul>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+    </div>
+
+    <!-- ====================================================== -->
+    <!-- GLOBAL SECTION: MERC STORE & MERCHANDISE               -->
+    <!-- ====================================================== -->
+    <section id="store" class="py-20 bg-[#121110]">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="text-center max-w-2xl mx-auto mb-14">
+          <span class="text-xs font-headline uppercase tracking-widest text-retro-gold font-bold">Merc Store</span>
+          <h2 class="text-3xl sm:text-5xl font-display uppercase text-white mt-1">GAMES & GEAR</h2>
+          <p class="text-retro-cream/70 mt-2 text-sm">
+            Equip your game night table with official Merc Gaming Co. decks and tabletop gear.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          
+          <!-- ITEM 1: CORE DECK -->
+          <div class="bg-retro-charcoal border border-white/10 hover:border-retro-orange rounded-2xl p-5 retro-shadow flex flex-col justify-between transition">
+            <div>
+              <div class="relative w-full aspect-square rounded-xl bg-black/40 border border-white/10 flex items-center justify-center overflow-hidden mb-4 p-4">
+                <span class="font-display text-white text-3xl text-center">CORE DECK</span>
+              </div>
+              <span class="text-[10px] font-headline uppercase tracking-widest text-retro-orange font-bold">Card Game</span>
+              <h3 class="font-display text-white text-base mt-1">LAST CARD STANDING</h3>
+              <p class="text-xs text-retro-cream/70 mt-2 leading-relaxed">
+                Complete 22-card casino black-core deck, rigid magnetic storage box, and foil rulebook.
+              </p>
+            </div>
+            <div class="mt-6 pt-4 border-t border-white/10 flex items-center justify-between">
+              <span class="font-display text-retro-gold text-lg">$24.99</span>
+              <button onclick="addToCart('core-deck', 'Last Card Standing - Core Deck', 24.99)" class="bg-retro-orange hover:bg-orange-600 text-white font-headline font-bold text-xs px-4 py-2.5 rounded-xl transition">
+                ADD TO CART
+              </button>
+            </div>
+          </div>
+
+          <!-- ITEM 2: FOUNDER'S DELUXE -->
+          <div class="bg-retro-charcoal border border-white/10 hover:border-retro-gold rounded-2xl p-5 retro-shadow flex flex-col justify-between transition">
+            <div>
+              <div class="relative w-full aspect-square rounded-xl bg-black/40 border border-white/10 flex items-center justify-center overflow-hidden mb-4 p-4">
+                <span class="font-display text-retro-gold text-3xl text-center">DELUXE BOX</span>
+              </div>
+              <span class="text-[10px] font-headline uppercase tracking-widest text-retro-gold font-bold">Collector Box</span>
+              <h3 class="font-display text-white text-base mt-1">FOUNDER'S EDITION</h3>
+              <p class="text-xs text-retro-cream/70 mt-2 leading-relaxed">
+                2x Core Decks, custom brass turn token, 4 acrylic prediction chevrons, and numbered sleeve.
+              </p>
+            </div>
+            <div class="mt-6 pt-4 border-t border-white/10 flex items-center justify-between">
+              <span class="font-display text-retro-gold text-lg">$39.99</span>
+              <button onclick="addToCart('deluxe-deck', 'Founder\'s Deluxe Edition', 39.99)" class="bg-retro-gold hover:bg-amber-400 text-black font-headline font-bold text-xs px-4 py-2.5 rounded-xl transition">
+                ADD TO CART
+              </button>
+            </div>
+          </div>
+
+          <!-- ITEM 3: TABLE PLAYMAT -->
+          <div class="bg-retro-charcoal border border-white/10 hover:border-retro-teal rounded-2xl p-5 retro-shadow flex flex-col justify-between transition">
+            <div>
+              <div class="relative w-full aspect-square rounded-xl bg-black/40 border border-white/10 flex items-center justify-center overflow-hidden mb-4 p-4">
+                <span class="font-display text-retro-teal text-3xl text-center">PLAYMAT</span>
+              </div>
+              <span class="text-[10px] font-headline uppercase tracking-widest text-retro-teal font-bold">Accessories</span>
+              <h3 class="font-display text-white text-base mt-1">NEOPRENE TABLE MAT</h3>
+              <p class="text-xs text-retro-cream/70 mt-2 leading-relaxed">
+                Stitched-edge gaming mat with printed zones for Draw, Number Discard, and Action Discard.
+              </p>
+            </div>
+            <div class="mt-6 pt-4 border-t border-white/10 flex items-center justify-between">
+              <span class="font-display text-retro-gold text-lg">$28.00</span>
+              <button onclick="addToCart('playmat', 'Official Neoprene Table Mat', 28.00)" class="bg-retro-teal hover:bg-teal-600 text-white font-headline font-bold text-xs px-4 py-2.5 rounded-xl transition">
+                ADD TO CART
+              </button>
+            </div>
+          </div>
+
+          <!-- ITEM 4: MERC ROPE CAP -->
+          <div class="bg-retro-charcoal border border-white/10 hover:border-retro-mint rounded-2xl p-5 retro-shadow flex flex-col justify-between transition">
+            <div>
+              <div class="relative w-full aspect-square rounded-xl bg-black/40 border border-white/10 flex items-center justify-center overflow-hidden mb-4 p-4">
+                <span class="font-display text-retro-mint text-3xl text-center">MERC CAP</span>
+              </div>
+              <span class="text-[10px] font-headline uppercase tracking-widest text-retro-mint font-bold">Apparel</span>
+              <h3 class="font-display text-white text-base mt-1">5-PANEL ROPE CAP</h3>
+              <p class="text-xs text-retro-cream/70 mt-2 leading-relaxed">
+                Vintage khaki 5-panel rope cap embroidered with the geometric Merc interlocking 'M' logo.
+              </p>
+            </div>
+            <div class="mt-6 pt-4 border-t border-white/10 flex items-center justify-between">
+              <span class="font-display text-retro-gold text-lg">$32.00</span>
+              <button onclick="addToCart('hat', 'Merc 5-Panel Rope Cap', 32.00)" class="bg-white/10 hover:bg-white/20 text-white font-headline font-bold text-xs px-4 py-2.5 rounded-xl transition">
+                ADD TO CART
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ======================================================== -->
+  <!-- FOOTER                                                   -->
+  <!-- ======================================================== -->
+  <footer class="bg-[#0E0D0C] border-t border-white/10 py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-10">
+        
+        <div class="md:col-span-5 space-y-4">
+          <div class="flex items-center gap-3">
+            <div class="w-8 h-8 flex items-center justify-center bg-black border border-white/10 rounded-lg p-1">
+              <svg class="w-full h-full text-white" viewBox="0 0 100 100" fill="currentColor">
+                <path d="M10 85 V20 L50 60 L90 20 V85 H74 V40 L50 64 L26 40 V85 Z"/>
+              </svg>
+            </div>
+            <span class="font-display text-xl text-white">MERC GAMING CO.</span>
+          </div>
+          <p class="text-xs text-retro-cream/60 leading-relaxed max-w-sm">
+            Independent tabletop studio publishing quick-teaching, tactile games built for intense bluffing and unforgettable table memories.
+          </p>
+          <div class="retro-ribbon-bar w-48 rounded-full"></div>
+        </div>
+
+        <div class="md:col-span-3 space-y-3 text-xs font-headline">
+          <h5 class="font-display text-white text-sm">GAMES</h5>
+          <ul class="space-y-2 text-white/60">
+            <li><button onclick="navigateToView('game')" class="hover:text-retro-gold transition">Last Card Standing</button></li>
+            <li><a href="#games-catalog" class="hover:text-retro-gold transition">Overtime Shakedown (Prototype)</a></li>
+            <li><a href="#games-catalog" class="hover:text-retro-gold transition">Speed Pit (Racing)</a></li>
+            <li><a href="#table-layout" class="hover:text-retro-gold transition">Rules & Table Setups</a></li>
+          </ul>
+        </div>
+
+        <div class="md:col-span-4 space-y-3 text-xs font-headline">
+          <h5 class="font-display text-white text-sm">VIP PLAYTEST DISPATCH</h5>
+          <p class="text-white/60 text-xs">Join our print-and-play tester circle to get early PDF rulebooks and prototypes.</p>
+          <form onsubmit="event.preventDefault(); showToast('Subscribed to Merc VIP dispatch!');" class="flex gap-2 pt-1">
+            <input type="email" required placeholder="your.email@tabletop.com" class="bg-black/60 border border-white/15 px-3 py-2 rounded-xl text-xs text-white placeholder-white/30 focus:outline-none focus:border-retro-gold flex-grow">
+            <button type="submit" class="bg-retro-orange hover:bg-orange-600 text-white font-headline font-bold text-xs px-4 py-2 rounded-xl transition">
+              JOIN
+            </button>
+          </form>
+        </div>
+
+      </div>
+
+      <div class="mt-12 pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between text-xs text-white/40">
+        <p>© <span id="current-year">2026</span> Merc Gaming Co. All rights reserved.</p>
+        <p class="mt-2 sm:mt-0">Designed for 1970s tabletop authenticity.</p>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- ======================================================== -->
+  <!-- CARD INSPECTOR LIGHTBOX MODAL                            -->
+  <!-- ======================================================== -->
+  <div id="card-inspector-modal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="relative bg-retro-charcoal border-2 border-white/20 rounded-3xl max-w-lg w-full p-6 sm:p-8 retro-shadow overflow-hidden">
+      <button onclick="closeCardInspector()" class="absolute top-4 right-4 text-white/60 hover:text-white bg-white/10 hover:bg-white/20 w-8 h-8 rounded-full flex items-center justify-center transition">
+        ✕
+      </button>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 items-center">
+        <!-- CARD DISPLAY -->
+        <div class="flex justify-center">
+          <div class="relative w-48 card-ratio rounded-2xl bg-retro-cream border-2 border-black shadow-2xl p-1 overflow-hidden flex items-center justify-center">
+            <img id="modal-card-img" src="" alt="Inspected Card" class="w-full h-full object-cover rounded-xl" onerror="this.style.display='none';">
+            <div id="modal-fallback-card" class="hidden absolute inset-0 flex-col items-center justify-center p-4 text-center bg-[#F5EEE2]">
+              <span id="modal-fallback-title" class="font-display text-3xl text-retro-charcoal">7</span>
+              <span id="modal-fallback-tag" class="text-[10px] font-headline uppercase text-retro-burgundy mt-1 font-bold">PIVOT</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- CARD DETAILS -->
+        <div class="space-y-4">
+          <div>
+            <span id="modal-card-tag" class="text-[10px] font-headline uppercase tracking-wider text-retro-gold font-bold bg-retro-gold/20 px-2 py-0.5 rounded">Tag</span>
+            <h3 id="modal-card-title" class="text-3xl font-display text-white mt-1">CARD</h3>
+          </div>
+          
+          <p id="modal-card-desc" class="text-xs text-retro-cream/80 leading-relaxed font-sans">
+            Card description and gameplay tactical guidance.
+          </p>
+
+          <div id="modal-card-stats" class="pt-2">
+            <!-- Dynamic Odds or Action Breakdown -->
+          </div>
+
+          <div class="pt-4 border-t border-white/10">
+            <button onclick="closeCardInspector()" class="w-full bg-white/10 hover:bg-white/20 text-white font-headline text-xs font-bold py-2.5 rounded-xl transition">
+              CLOSE INSPECTOR
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- CART DRAWER                                              -->
+  <!-- ======================================================== -->
+  <div id="cart-backdrop" onclick="toggleCartDrawer()" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden transition-opacity"></div>
+  <aside id="cart-drawer" class="fixed top-0 right-0 z-50 h-full w-full max-w-md bg-[#181615] border-l border-white/10 transform translate-x-full transition-transform duration-300 flex flex-col">
+    <div class="p-5 border-b border-white/10 flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <span class="font-display text-white text-lg">YOUR STASH</span>
+        <span id="cart-count" class="bg-retro-orange text-white text-xs font-display px-2 py-0.5 rounded-full">0</span>
+      </div>
+      <button onclick="toggleCartDrawer()" class="text-white/60 hover:text-white p-2">✕</button>
+    </div>
+
+    <!-- CART ITEMS -->
+    <div id="cart-items" class="p-5 flex-grow overflow-y-auto space-y-3">
+      <div class="text-center py-12 text-retro-cream/60 text-xs">Your stash is currently empty.</div>
+    </div>
+
+    <!-- CART FOOTER -->
+    <div class="p-5 border-t border-white/10 bg-black/40 space-y-4">
+      <div class="flex justify-between items-center text-sm font-headline">
+        <span class="text-white/60">SUBTOTAL</span>
+        <span id="cart-subtotal" class="font-display text-retro-gold text-lg">$0.00</span>
+      </div>
+      <button onclick="showToast('Simulated Checkout: Store connected successfully!')" class="w-full bg-retro-orange hover:bg-orange-600 text-white font-display text-xs tracking-wider py-4 rounded-xl transition retro-shadow">
+        SECURE CHECKOUT
+      </button>
+    </div>
+  </aside>
+
+  <!-- TOAST NOTIFICATION -->
+  <div id="toast" class="fixed bottom-6 right-6 z-50 bg-retro-charcoal border-2 border-retro-gold text-white px-5 py-3 rounded-2xl retro-shadow transition-opacity duration-300 opacity-0 pointer-events-none flex items-center gap-3">
+    <span class="text-retro-gold text-base">★</span>
+    <span id="toast-msg" class="text-xs font-headline font-bold">Notification text</span>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- JAVASCRIPT: INDEXEDDB, ROUTER, CART & RENDER ENGINE      -->
+  <!-- ======================================================== -->
+  <script>
+    // 1. CARDS ROSTER (22 CARDS)
+    const DECK_CARDS = [
+      { id: '1', title: '1', type: 'number', tag: 'Lowest Rank', desc: 'Predict HIGHER with 93% mathematical probability. An elite survival card.', img: '1.png' },
+      { id: '2', title: '2', type: 'number', tag: 'Safe Low', desc: 'Calling Higher has an 85% probability of surviving.', img: '2.png' },
+      { id: '3', title: '3', type: 'number', tag: 'Base Low', desc: 'Strong defensive base card. Comfortable calling higher.', img: '3.png' },
+      { id: '4', title: '4', type: 'number', tag: 'Lower Mid', desc: 'Moderate low rank. High probability calling higher.', img: '4.png' },
+      { id: '5', title: '5', type: 'number', tag: 'Mid Range', desc: 'Higher still holds a statistical edge over lower.', img: '5.png' },
+      { id: '6', title: '6', type: 'number', tag: 'Mid Range', desc: 'Calculated gamble. Prime target for opponent FORCE cards.', img: '6.png' },
+      { id: '7', title: '7', type: 'number', tag: 'Dead Pivot', desc: 'Exact center rank. 50/50 toss-up on higher or lower.', img: '7.png' },
+      { id: '8', title: '8', type: 'number', tag: 'Dead Pivot', desc: 'Center pivot. Lower begins to gain numerical favor.', img: '8.png' },
+      { id: '9', title: '9', type: 'number', tag: 'Upper Mid', desc: 'Favorable lower prediction. Dangerous target for DOUBLE DOWN.', img: '9.png' },
+      { id: '10', title: '10', type: 'number', tag: 'Upper Mid', desc: 'Safely predict lower with high confidence.', img: '10.png' },
+      { id: '11', title: '11', type: 'number', tag: 'Base High', desc: 'Predict lower with ~77% odds of survival.', img: '11.png' },
+      { id: '12', title: '12', type: 'number', tag: 'Base High', desc: 'Reliable card to sit on; calling lower is highly safe.', img: '12.png' },
+      { id: '13', title: '13', type: 'number', tag: 'Safe High', desc: 'Predict lower with 85% odds. Beware of SPLIT plays.', img: '13.png' },
+      { id: '14', title: '14', type: 'number', tag: 'Apex Rank', desc: 'Predict LOWER with 93% success rate. The table apex card.', img: '14.png' },
+      { id: 'FORCE', title: 'FORCE', type: 'action', tag: 'Attack (x2)', desc: 'Force an opponent to immediately predict on a card of your choice.', img: 'FORCE.png' },
+      { id: 'TRAP', title: 'TRAP', type: 'action', tag: 'Sabotage (x2)', desc: 'Look at top 3 cards in Draw Pile; return 2, place 1 blind for opponent to flip.', img: 'TRAP.png' },
+      { id: 'LOOP', title: 'LOOP', type: 'action', tag: 'Lockdown (x2)', desc: 'Lock an opponent’s card until they fail. SWAP cannot break it.', img: 'LOOP.png' },
+      { id: 'REORDER', title: 'REORDER', type: 'action', tag: 'Control (x2)', desc: 'Inspect next 3 cards of the Draw Pile and reorder them in any sequence.', img: 'REORDER.png' },
+      { id: 'SWAP', title: 'SWAP', type: 'action', tag: 'Theft (x2)', desc: 'Swap 1 of your cards with an opponent’s card immediately.', img: 'SWAP.png' },
+      { id: 'DOUBLE DOWN', title: 'DOUBLE DOWN', type: 'action', tag: 'Punisher (x2)', desc: 'Force an opponent to make 2 consecutive predictions on 1 card.', img: 'DOUBLE DOWN.png' },
+      { id: 'SPLIT', title: 'SPLIT', type: 'action', tag: 'Gamble (x2)', desc: 'Predict if target card is INSIDE or OUTSIDE the next 2 draws.', img: 'SPLIT.png' },
+      { id: 'HOW TO PLAY', title: 'HOW TO PLAY', type: 'guide', tag: 'Rules Guide', desc: 'Core turn rules: Deal 4, predict higher/lower/match, and survive.', img: 'HOW TO PLAY.png' }
+    ];
+
+    // 2. VIEW NAVIGATION ROUTER
+    let currentView = 'home';
+
+    function navigateToView(viewName) {
+      currentView = viewName;
+      const homeView = document.getElementById('view-home');
+      const gameView = document.getElementById('view-game');
+      const btnHome = document.getElementById('nav-btn-home');
+      const btnGame = document.getElementById('nav-btn-game');
+
+      if (viewName === 'home') {
+        if (homeView) homeView.classList.remove('hidden');
+        if (gameView) gameView.classList.add('hidden');
+        if (btnHome) { btnHome.classList.add('text-retro-gold'); btnHome.classList.remove('text-white/80'); }
+        if (btnGame) { btnGame.classList.remove('text-retro-gold'); btnGame.classList.add('text-white/80'); }
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        if (homeView) homeView.classList.add('hidden');
+        if (gameView) gameView.classList.remove('hidden');
+        if (btnGame) { btnGame.classList.add('text-retro-gold'); btnGame.classList.remove('text-white/80'); }
+        if (btnHome) { btnHome.classList.remove('text-retro-gold'); btnHome.classList.add('text-white/80'); }
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+
+    // 3. INDEXEDDB PERSISTENT STORAGE
+    const DB_NAME = 'MercGamingAssetsDB';
+    const DB_VERSION = 1;
+    const STORE_NAME = 'artworks';
+
+    function openDatabase() {
+      return new Promise((resolve, reject) => {
+        try {
+          const req = indexedDB.open(DB_NAME, DB_VERSION);
+          req.onupgradeneeded = (e) => {
+            const db = e.target.result;
+            if (!db.objectStoreNames.contains(STORE_NAME)) {
+              db.createObjectStore(STORE_NAME);
+            }
+          };
+          req.onsuccess = (e) => resolve(e.target.result);
+          req.onerror = (e) => reject(e.target.error);
+        } catch (err) {
+          reject(err);
+        }
+      });
+    }
+
+    async function saveAssetToDB(key, dataUrl) {
+      try {
+        const db = await openDatabase();
+        return new Promise((resolve, reject) => {
+          const tx = db.transaction([STORE_NAME], 'readwrite');
+          const store = tx.objectStore(STORE_NAME);
+          const req = store.put(dataUrl, key.toLowerCase().trim());
+          req.onsuccess = () => resolve(true);
+          req.onerror = () => reject(req.error);
+        });
+      } catch (err) {
+        console.warn('Storage unavailable:', err);
+      }
+    }
+
+    async function getAssetFromDB(key) {
+      try {
+        const db = await openDatabase();
+        return new Promise((resolve) => {
+          const tx = db.transaction([STORE_NAME], 'readonly');
+          const store = tx.objectStore(STORE_NAME);
+          const req = store.get(key.toLowerCase().trim());
+          req.onsuccess = () => resolve(req.result || null);
+          req.onerror = () => resolve(null);
+        });
+      } catch (err) {
+        return null;
+      }
+    }
+
+    async function clearAssetsFromDB() {
+      try {
+        const db = await openDatabase();
+        return new Promise((resolve, reject) => {
+          const tx = db.transaction([STORE_NAME], 'readwrite');
+          const store = tx.objectStore(STORE_NAME);
+          const req = store.clear();
+          req.onsuccess = () => resolve(true);
+          req.onerror = () => reject(req.error);
+        });
+      } catch (err) {
+        console.warn('Storage unavailable:', err);
+      }
+    }
+
+    // 4. RESTORE SAVED ASSETS
+    async function restoreSavedAssets() {
+      try {
+        // Logo
+        const savedLogo = await getAssetFromDB('merc gaming co logo.png');
+        if (savedLogo) {
+          const navLogoImg = document.getElementById('nav-logo-img');
+          const navLogoSvg = document.getElementById('nav-logo-svg');
+          if (navLogoImg) {
+            navLogoImg.src = savedLogo;
+            navLogoImg.classList.remove('hidden');
+          }
+          if (navLogoSvg) navLogoSvg.classList.add('hidden');
+        }
+
+        // Hero Cards & Spotlight Cards
+        const heroDD = await getAssetFromDB('DOUBLE DOWN.png');
+        if (heroDD) {
+          const el = document.getElementById('hero-img-doubledown');
+          if (el) el.src = heroDD;
+          const hLeft = document.getElementById('home-spot-left');
+          if (hLeft) hLeft.src = heroDD;
+        }
+
+        const hero14 = await getAssetFromDB('14.png');
+        if (hero14) {
+          const el = document.getElementById('hero-img-14');
+          if (el) el.src = hero14;
+          const hRight = document.getElementById('home-spot-right');
+          if (hRight) hRight.src = hero14;
+        }
+
+        const hero7 = await getAssetFromDB('7.png');
+        if (hero7) {
+          const el = document.getElementById('hero-img-7');
+          if (el) el.src = hero7;
+          const hCenter = document.getElementById('home-spot-center');
+          if (hCenter) hCenter.src = hero7;
+        }
+
+        // Table Layout Diagram
+        const savedLayout = await getAssetFromDB('LAYOUT.jpg');
+        if (savedLayout) {
+          const layoutImg = document.getElementById('layout-diagram-img');
+          if (layoutImg) layoutImg.src = savedLayout;
+        }
+
+        // Vault cards
+        renderDeckCards('all');
+      } catch (err) {
+        console.warn('Error during asset restore:', err);
+      }
+    }
+
+    // 5. RENDER CARD VAULT
+    async function renderDeckCards(filter = 'all') {
+      const container = document.getElementById('cards-grid');
+      if (!container) return;
+      container.innerHTML = '';
+
+      const filtered = DECK_CARDS.filter(c => {
+        if (filter === 'all') return true;
+        if (filter === 'number') return c.type === 'number';
+        if (filter === 'action') return c.type === 'action';
+        if (filter === 'rules') return c.type === 'guide';
+        return true;
+      });
+
+      for (const card of filtered) {
+        const savedUrl = await getAssetFromDB(card.img);
+        const cardBox = document.createElement('div');
+        cardBox.className = 'group relative flex flex-col items-center bg-retro-charcoal border-2 border-white/10 hover:border-retro-gold rounded-2xl p-3.5 transition retro-shadow hover:-translate-y-1.5 cursor-pointer';
+        cardBox.onclick = () => openCardInspector(card.id);
+
+        cardBox.innerHTML = `
+          <div class="relative w-full card-ratio rounded-xl overflow-hidden bg-retro-cream border-2 border-black flex items-center justify-center">
+            <img src="${savedUrl || card.img}" alt="${card.title}" class="w-full h-full object-cover rounded-lg" onerror="this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='flex';">
+            <div class="${savedUrl ? 'hidden' : 'flex'} absolute inset-0 flex-col items-center justify-center p-2 text-center bg-[#F5EEE2]">
+              <span class="font-display text-2xl text-retro-charcoal">${card.title}</span>
+              <span class="text-[9px] font-headline uppercase text-retro-burgundy mt-1 font-bold">${card.tag}</span>
+            </div>
+            <div class="absolute inset-0 bg-retro-charcoal/40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
+              <span class="bg-retro-orange text-white text-[10px] font-display uppercase tracking-wider px-2.5 py-1 rounded-lg">INSPECT</span>
+            </div>
+          </div>
+          <div class="w-full mt-2.5 flex items-center justify-between text-xs">
+            <span class="font-display text-white text-sm">${card.title}</span>
+            <span class="text-[9px] font-headline text-retro-gold font-bold uppercase">${card.tag}</span>
+          </div>
+        `;
+        container.appendChild(cardBox);
+      }
+    }
+
+    // 6. CARD INSPECTOR MODAL
+    async function openCardInspector(cardId) {
+      const card = DECK_CARDS.find(c => c.id === cardId);
+      if (!card) return;
+      const modal = document.getElementById('card-inspector-modal');
+      const imgEl = document.getElementById('modal-card-img');
+      const titleEl = document.getElementById('modal-card-title');
+      const tagEl = document.getElementById('modal-card-tag');
+      const descEl = document.getElementById('modal-card-desc');
+      const statsEl = document.getElementById('modal-card-stats');
+
+      titleEl.textContent = card.title;
+      tagEl.textContent = card.tag;
+      descEl.textContent = card.desc;
+
+      const savedUrl = await getAssetFromDB(card.img);
+      imgEl.src = savedUrl || card.img;
+      imgEl.style.display = 'block';
+
+      if (statsEl) {
+        if (card.type === 'number') {
+          const n = parseInt(card.id, 10);
+          const higher = Math.round(((14 - n) / 13) * 100);
+          const lower = Math.round(((n - 1) / 13) * 100);
+          statsEl.innerHTML = `
+            <div class="grid grid-cols-2 gap-2 text-center">
+              <div class="bg-black/50 p-2 rounded-lg border border-white/10">
+                <span class="text-[9px] text-white/50 uppercase font-headline">Predict Higher</span>
+                <p class="text-xs font-display text-retro-gold mt-0.5">${higher}% Win</p>
+              </div>
+              <div class="bg-black/50 p-2 rounded-lg border border-white/10">
+                <span class="text-[9px] text-white/50 uppercase font-headline">Predict Lower</span>
+                <p class="text-xs font-display text-retro-teal mt-0.5">${lower}% Win</p>
+              </div>
+            </div>
+          `;
+        } else {
+          statsEl.innerHTML = `
+            <div class="bg-black/50 p-2 rounded-lg border border-white/10 text-center">
+              <span class="text-[9px] text-white/50 uppercase font-headline">Action Category</span>
+              <p class="text-xs font-display text-retro-orange mt-0.5">${card.tag}</p>
+            </div>
+          `;
+        }
+      }
+
+      if (modal) modal.classList.remove('hidden');
+    }
+
+    function closeCardInspector() {
+      const modal = document.getElementById('card-inspector-modal');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    window.openCardInspector = openCardInspector;
+    window.openInspectorModal = openCardInspector;
+
+    // 7. FILE UPLOADER & DRAG-AND-DROP
+    async function handleFiles(files) {
+      if (!files || !files.length) return;
+      let count = 0;
+      for (const file of Array.from(files)) {
+        const name = file.name.trim();
+        const dataUrl = await readFileDataURL(file);
+        await saveAssetToDB(name, dataUrl);
+        count++;
+      }
+      await restoreSavedAssets();
+      showToast(`Saved ${count} assets permanently to browser memory!`);
+    }
+
+    function readFileDataURL(file) {
+      return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onload = (e) => resolve(e.target.result);
+        reader.readAsDataURL(file);
+      });
+    }
+
+    // 8. SHOPPING CART
+    let cart = [];
+
+    function addToCart(id, name, price) {
+      const item = cart.find(i => i.id === id);
+      if (item) { item.qty++; } else { cart.push({ id, name, price, qty: 1 }); }
+      updateCart();
+      showToast(`Added ${name} to cart!`);
+    }
+
+    function updateCartQty(id, delta) {
+      const item = cart.find(i => i.id === id);
+      if (!item) return;
+      item.qty += delta;
+      if (item.qty <= 0) cart = cart.filter(i => i.id !== id);
+      updateCart();
+    }
+
+    function updateCart() {
+      const totalQty = cart.reduce((s, i) => s + i.qty, 0);
+      const subtotal = cart.reduce((s, i) => s + (i.price * i.qty), 0);
+      
+      const badge = document.getElementById('cart-badge');
+      if (badge) badge.textContent = totalQty;
+      
+      const countEl = document.getElementById('cart-count');
+      if (countEl) countEl.textContent = totalQty;
+
+      const subtotalEl = document.getElementById('cart-subtotal');
+      if (subtotalEl) subtotalEl.textContent = `$${subtotal.toFixed(2)}`;
+
+      const itemsContainer = document.getElementById('cart-items');
+      if (itemsContainer) {
+        if (!cart.length) {
+          itemsContainer.innerHTML = '<div class="text-center py-12 text-retro-cream/60 text-xs">Your stash is currently empty.</div>';
+        } else {
+          itemsContainer.innerHTML = cart.map(item => `
+            <div class="flex items-center justify-between bg-black/40 p-3 rounded-xl border border-white/10">
+              <div>
+                <p class="font-headline font-bold text-white text-xs">${item.name}</p>
+                <p class="text-xs text-retro-gold mt-0.5">$${item.price.toFixed(2)}</p>
+              </div>
+              <div class="flex items-center gap-2">
+                <button onclick="updateCartQty('${item.id}', -1)" class="w-6 h-6 rounded bg-white/10 hover:bg-white/20 text-white flex items-center justify-center text-xs">-</button>
+                <span class="text-xs font-bold text-white w-4 text-center">${item.qty}</span>
+                <button onclick="updateCartQty('${item.id}', 1)" class="w-6 h-6 rounded bg-white/10 hover:bg-white/20 text-white flex items-center justify-center text-xs">+</button>
+              </div>
+            </div>
+          `).join('');
+        }
+      }
+    }
+
+    function toggleCartDrawer() {
+      const drawer = document.getElementById('cart-drawer');
+      const backdrop = document.getElementById('cart-backdrop');
+      if (!drawer || !backdrop) return;
+      const isOpen = !drawer.classList.contains('translate-x-full');
+      if (isOpen) {
+        drawer.classList.add('translate-x-full');
+        backdrop.classList.add('hidden');
+      } else {
+        drawer.classList.remove('translate-x-full');
+        backdrop.classList.remove('hidden');
+      }
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      const toastMsg = document.getElementById('toast-msg');
+      if (!toast || !toastMsg) return;
+      toastMsg.textContent = msg;
+      toast.classList.remove('opacity-0', 'pointer-events-none');
+      setTimeout(() => toast.classList.add('opacity-0', 'pointer-events-none'), 3000);
+    }
+
+    // 9. BOOTSTRAP ON LOAD
+    window.addEventListener('DOMContentLoaded', () => {
+      // Set Year
+      const yrEl = document.getElementById('current-year');
+      if (yrEl) yrEl.textContent = new Date().getFullYear();
+
+      // Vault Filter Buttons
+      document.querySelectorAll('.vault-filter-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.vault-filter-btn').forEach(b => {
+            b.classList.remove('bg-retro-orange', 'text-white');
+            b.classList.add('bg-white/10', 'text-retro-cream');
+          });
+          btn.classList.add('bg-retro-orange', 'text-white');
+          btn.classList.remove('bg-white/10', 'text-retro-cream');
+          renderDeckCards(btn.dataset.filter);
+        });
+      });
+
+      // Asset Upload & Reset Buttons
+      const uploadBtn = document.getElementById('asset-upload-btn');
+      const fileInput = document.getElementById('asset-file-input');
+      const resetBtn = document.getElementById('asset-reset-btn');
+
+      if (uploadBtn && fileInput) {
+        uploadBtn.addEventListener('click', () => fileInput.click());
+        fileInput.addEventListener('change', (e) => handleFiles(e.target.files));
+      }
+
+      if (resetBtn) {
+        resetBtn.addEventListener('click', async () => {
+          await clearAssetsFromDB();
+          showToast('Asset memory cleared.');
+          setTimeout(() => location.reload(), 600);
+        });
+      }
+
+      // Drag and drop anywhere on the window
+      window.addEventListener('dragover', (e) => e.preventDefault());
+      window.addEventListener('drop', (e) => {
+        e.preventDefault();
+        if (e.dataTransfer && e.dataTransfer.files) {
+          handleFiles(e.dataTransfer.files);
+        }
+      });
+
+      // Initial restore & render
+      restoreSavedAssets();
+      updateCart();
+    });
+  </script>
+</body>
+</html>
